@@ -147,13 +147,73 @@ CÓMO HABLARLE: Directo, sin rodeos. Cero adulación. Análisis + recomendación
 // ── MODE CONFIG ──────────────────────────────────────────────
 const MODE_LABEL = {regulacion:'Regulación',espejo:'Espejo',socratico:'Socrático',estructurador:'Estructurador',confrontador:'Confrontador'};
 const MODE_ICON  = {regulacion:'🌊',espejo:'🪞',socratico:'◉',estructurador:'⧖',confrontador:'⚡'};
+const HORIZONTE_LABEL = {presente:'Esta semana',este_ano:'Este año',varios_anos:'Varios años',matrimonio:'Matrimonio',paternidad:'Paternidad',legado:'Legado y finitud',identidad:'Identidad profunda'};
+
+const DILEMAS_UNIVERSALES=[
+  // ── PRESENTE ──
+  {area:'Control y energía',horizonte:'presente',fuente:'Epicteto',pregunta:'De todo lo que te preocupa ahora mismo, ¿qué parte está realmente en tu control? ¿Y en la parte que no lo está, cuánta energía estás gastando?'},
+  {area:'Presencia real',horizonte:'presente',fuente:'Csikszentmihalyi',pregunta:'¿Cuándo fue la última vez esta semana que estuviste completamente absorbido en algo? ¿Qué dice eso sobre cómo estás distribuyendo tu tiempo?'},
+  {area:'Estado sin narrativa',horizonte:'presente',fuente:'Rogers',pregunta:'Si quitaras la narrativa de cómo deberían estar las cosas, ¿cómo estás realmente ahora mismo?'},
+  {area:'Pensamiento automático',horizonte:'presente',fuente:'Beck',pregunta:'¿Cuál es el pensamiento que más veces tuvo lugar hoy? No si es verdad — solo cuál fue. ¿Qué está generando?'},
+  // ── ESTE AÑO ──
+  {area:'Preservar o transformar',horizonte:'este_ano',fuente:'Kegan',pregunta:'¿Estás en un año de preservarte o de transformarte? Las dos tienen valor — pero confundirlas tiene un coste.'},
+  {area:'Carácter en construcción',horizonte:'este_ano',fuente:'Aristóteles',pregunta:'Las decisiones pequeñas que estás tomando esta semana, ¿construyen el carácter que quieres tener o refuerzan el que ya tienes?'},
+  {area:'Muerte al pasado',horizonte:'este_ano',fuente:'Jung',pregunta:'¿Hay algo que este año te está pidiendo que mueras a una versión de ti mismo? ¿Lo estás resistiendo o permitiendo?'},
+  {area:'Acción elegida',horizonte:'este_ano',fuente:'Sartre',pregunta:'¿Qué acción concreta de esta semana fue completamente tuya — elegida desde tus valores, no desde el deber o la expectativa?'},
+  {area:'Compromiso activo',horizonte:'este_ano',fuente:'Frankl',pregunta:'¿Cuál es el compromiso más importante que hiciste contigo mismo este año? ¿Cómo lo estás honrando esta semana?'},
+  {area:'Cambio bloqueado',horizonte:'este_ano',fuente:'Kegan-Lahey',pregunta:'¿Qué quieres cambiar que llevas tiempo sin cambiar? ¿Qué estás haciendo activamente que impide ese cambio?'},
+  // ── VARIOS AÑOS ──
+  {area:'Fase del viaje',horizonte:'varios_anos',fuente:'Campbell',pregunta:'¿En qué momento del viaje estás — la llamada, el umbral, la prueba, el retorno? ¿Hay alguna fase que estés evitando cruzar?'},
+  {area:'Tener vs. ser',horizonte:'varios_anos',fuente:'Fromm',pregunta:'¿Estás construyendo una vida para tener — logros, posición, reconocimiento — o para ser alguien? ¿Cuál pesa más en tus decisiones reales?'},
+  {area:'Amor fati',horizonte:'varios_anos',fuente:'Nietzsche',pregunta:'Si tuvieras que querer que esta etapa de tu vida sea exactamente como es — con sus fricciones, sus costes, sus renuncias — ¿qué cambiaría en cómo la vives?'},
+  {area:'Llamada sin respuesta',horizonte:'varios_anos',fuente:'Rollo May',pregunta:'¿Qué estás posponiendo que sabes que solo tú puedes hacer y que, si no lo haces tú, no lo hará nadie?'},
+  {area:'Evidencia de soberanía',horizonte:'varios_anos',fuente:'Branden',pregunta:'¿Qué evidencia concreta estás construyendo ahora mismo de que puedes generar valor propio, independiente de cualquier estructura?'},
+  {area:'Patrón repetido',horizonte:'varios_anos',fuente:'Jung',pregunta:'¿En qué área de tu vida estás repitiendo un patrón que juraste no repetir? ¿Qué lo mantiene activo?'},
+  // ── MATRIMONIO ──
+  {area:'Práctica del amor',horizonte:'matrimonio',fuente:'Fromm',pregunta:'El amor no es un estado que tienes — es una práctica activa que mantienes o descuidas. ¿Qué tan activa es tu práctica ahora mismo?'},
+  {area:'Conocimiento real',horizonte:'matrimonio',fuente:'Yalom',pregunta:'¿Cuánto de ti mismo conoce realmente tu pareja? No la versión funcional — la versión interna que LUCID conoce.'},
+  {area:'Autenticidad en pareja',horizonte:'matrimonio',fuente:'Heidegger',pregunta:'¿Tu relación te hace más tú mismo o te pide sistemáticamente que seas una versión reducida?'},
+  {area:'Dos soledades',horizonte:'matrimonio',fuente:'Rilke',pregunta:'El amor maduro no es fusión — es que dos soledades se protejan y se saluden. ¿Cuánto espacio tiene cada uno de los dos para ser?'},
+  {area:'Sombra en pareja',horizonte:'matrimonio',fuente:'Jung',pregunta:'¿Qué parte de tu sombra — lo que más te cuesta de ti mismo — está apareciendo en la relación? La pareja suele ser el espejo más brutal.'},
+  {area:'Necesidades no dichas',horizonte:'matrimonio',fuente:'Rosenberg',pregunta:'¿Qué necesitas de la relación que no estás pidiendo claramente? No lo que debería darte — lo que estás dejando de pedir.'},
+  // ── PATERNIDAD ──
+  {area:'Generatividad',horizonte:'paternidad',fuente:'Erikson',pregunta:'La generatividad — crear algo que continúe más allá de ti — es la tarea central de la mitad de la vida. ¿Dónde la estás ejerciendo y dónde la estás aplazando?'},
+  {area:'Herencia psíquica',horizonte:'paternidad',fuente:'Jung',pregunta:'¿Qué heridas recibiste de tu padre que corres riesgo de transmitir sin querer? ¿Cuáles estás rompiendo conscientemente?'},
+  {area:'Amor que libera',horizonte:'paternidad',fuente:'Fromm',pregunta:'El amor productivo al hijo no es \'te doy todo\' sino \'te ayudo a no necesitarme\'. ¿Cómo estás cultivando la autonomía de tus hijos?'},
+  {area:'Ejemplo vs. discurso',horizonte:'paternidad',fuente:'Frankl',pregunta:'¿Qué estás enseñando a tus hijos esta semana con lo que haces, no con lo que dices?'},
+  {area:'Fortaleza transmitida',horizonte:'paternidad',fuente:'Hollis',pregunta:'¿Estás criando hijos que saben que la vida tiene dificultad y que pueden con ella — o los estás protegiendo de la fricción que los haría fuertes?'},
+  {area:'Legado vivo',horizonte:'paternidad',fuente:'Frankl',pregunta:'¿Qué quieres que tus hijos sepan sobre cómo su padre vivió — no sobre qué logró?'},
+  // ── LEGADO Y FINITUD ──
+  {area:'El tiempo propio',horizonte:'legado',fuente:'Séneca',pregunta:'\'Todo lo demás es ajeno, solo el tiempo es tuyo.\' ¿A qué estás dando tu tiempo esta semana — y lo darías si supieras que es tiempo que no recuperas?'},
+  {area:'Finitud operativa',horizonte:'legado',fuente:'Heidegger',pregunta:'Si vivieras con conciencia real de tu finitud — no como idea sino como certeza operativa — ¿qué dejarías de hacer mañana? ¿Qué empezarías?'},
+  {area:'Ondas en el agua',horizonte:'legado',fuente:'Yalom',pregunta:'¿Qué impacto estás teniendo en personas, ideas, los que vendrán — que continuará después de ti sin que lo sepas?'},
+  {area:'Urgencia real',horizonte:'legado',fuente:'Marco Aurelio',pregunta:'¿Actúas como si tuvieras tiempo ilimitado o como el hombre que sabe que no? ¿Qué diferencia habría si fuera lo segundo?'},
+  {area:'Clarificación por finitud',horizonte:'legado',fuente:'Epicuro',pregunta:'¿Qué hay en tu vida ahora mismo que solo cobra sentido cuando lo ves desde el final?'},
+  {area:'Lo no dicho',horizonte:'legado',fuente:'Yalom',pregunta:'¿Hay algo que quieras decirle a alguien importante que aún no has dicho? ¿Qué estás esperando?'},
+  // ── IDENTIDAD PROFUNDA ──
+  {area:'Vida examinada',horizonte:'identidad',fuente:'Sócrates',pregunta:'¿Cuándo fue la última vez que cuestionaste una creencia sobre ti mismo que llevas años dando por verdadera?'},
+  {area:'Existencia como elección',horizonte:'identidad',fuente:'Sartre',pregunta:'No tienes una naturaleza fija — te defines por lo que eliges hacer. ¿Tus elecciones de esta semana definen al hombre que quieres ser?'},
+  {area:'Individuación',horizonte:'identidad',fuente:'Jung',pregunta:'¿Hay una versión más completa de ti — que integra tus contradicciones, tu sombra, lo que niegas — que estás evitando convertirte?'},
+  {area:'Tres planos de existencia',horizonte:'identidad',fuente:'Kierkegaard',pregunta:'Existes en tres planos — el estético (placer), el ético (deber, integridad), el existencial (sentido auténtico). ¿En cuál estás viviendo más y en cuál menos?'},
+  {area:'Ser sin audiencia',horizonte:'identidad',fuente:'Nietzsche',pregunta:'¿Sabes quién eres cuando nadie está mirando y no hay nada que demostrar? ¿Ese hombre y el que proyectas son el mismo?'},
+  {area:'Identidad para otros',horizonte:'identidad',fuente:'Hollis',pregunta:'¿Qué parte de tu identidad construiste para el mundo exterior que ya no necesitas seguir sosteniendo?'},
+  {area:'Miedo e identidad',horizonte:'identidad',fuente:'Rollo May',pregunta:'¿Qué te impide ser quien sabes que podrías ser? ¿Es miedo, coste real, o son lo mismo?'},
+  // ── UNIVERSALES ──
+  {area:'Brecha identitaria',horizonte:'universal',fuente:'Rogers',pregunta:'¿Hay una brecha entre la persona que proyectas y quien eres cuando nadie te ve? ¿Cuánto te cuesta mantenerla?'},
+  {area:'Trabajo más importante',horizonte:'universal',fuente:'Frankl',pregunta:'¿Cuál es el trabajo más importante de tu vida? ¿Cuánto tiempo real le dedicas esta semana?'},
+  {area:'Miedo a fallar',horizonte:'universal',fuente:'Rollo May',pregunta:'¿Qué oportunidad llevas tiempo evitando porque el riesgo de fracasar es visible y el coste de no intentarlo, invisible?'},
+  {area:'Valor declarado vs. vivido',horizonte:'universal',fuente:'Hayes/ACT',pregunta:'¿Cuál es el valor que más declaras y menos practicas? ¿Qué coste tiene esa brecha?'},
+  {area:'Narrativa limitante',horizonte:'universal',fuente:'Beck',pregunta:'¿Cuál es la narrativa sobre ti mismo que te limita y que llevas tanto tiempo usando que ya ni la cuestionas?'},
+  {area:'Rendición lenta',horizonte:'universal',fuente:'Kegan-Lahey',pregunta:'¿Hay algo en lo que estés rindiéndote poco a poco, tan despacio que casi no lo notas?'},
+  {area:'Urgencia de vida',horizonte:'universal',fuente:'Yalom',pregunta:'Si supieras que tienes cinco años de salud plena, ¿qué cambiarías en tu vida esta semana? ¿Por qué no lo estás haciendo?'}
+];
 
 // ── PROMPTS ──────────────────────────────────────────────────
 
 function orchSys(memCtx){
 return `Eres el sistema de calibración de LUCID. Analiza el texto y determina el modo de intervención óptimo.
 Responde SOLO JSON válido, sin markdown, sin texto adicional:
-{"mode":"regulacion|espejo|socratico|estructurador|confrontador","tolerance":"green|yellow|red","emotional_state":"...","active_bias":"...o null","inferred_need":"procesar|decidir|entender|ser_retado","longitudinal_note":"...o null"}
+{"mode":"regulacion|espejo|socratico|estructurador|confrontador","tolerance":"green|yellow|red","emotional_state":"...","active_bias":"...o null","inferred_need":"procesar|decidir|entender|ser_retado","longitudinal_note":"...o null","temporal_horizon":"presente|este_ano|varios_anos|matrimonio|paternidad|legado|identidad"}
 
 CRITERIOS DE MODO:
 regulacion — crisis aguda, desbordamiento emocional, incapacidad de estructurar, activación muy alta
@@ -166,6 +226,16 @@ CRITERIOS DE VENTANA DE TOLERANCIA:
 red — lenguaje de crisis, desbordamiento, pérdida de estructura → FUERZA mode=regulacion
 yellow — activación alta pero funcional → evitar confrontador
 green — estado funcional → todos los modos disponibles
+
+CRITERIOS DE HORIZONTE TEMPORAL:
+presente — estado de la semana, carga emocional inmediata, tareas diarias, lo que ocupa la mente hoy
+este_ano — trabajo, ascenso, equipo, objetivos anuales, decisiones de corto plazo
+varios_anos — proyectos de largo alcance, soberanía, identidad en construcción, 2-5 años
+matrimonio — pareja, relación íntima, comunicación, conflictos de convivencia, lo no dicho en la relación
+paternidad — hijos, crianza, transmisión de valores, patrones familiares heredados
+legado — finitud, muerte propia o de cercanos, qué permanece, urgencia existencial, padre enfermo
+identidad — quién soy profundamente, sombra, individuación, valores nucleares, el hombre que quiero ser
+Sin horizonte claro en el texto → "presente"
 
 MEMORIA: ${memCtx}
 PERFIL: ${BASE.slice(0,300)}...`}
@@ -218,8 +288,11 @@ Sé la voz que Fernando no escucha en su propia cabeza, no el eco de la que ya t
 Lenguaje de conducta siempre, nunca de identidad.
 CIERRE [C]: una pregunta que el usuario no pueda ignorar y que lleve necesariamente a acción.`};
 
-function buildLucidSys(mode, memCtx){
+function buildLucidSys(mode, memCtx, horizonte){
 const instr = MODE_INSTR[mode]||MODE_INSTR.socratico;
+const hz=horizonte||'presente';
+const hzLabel=HORIZONTE_LABEL[hz]||hz;
+const hzCtx=hz!=='presente'?`\nHORIZONTE ACTIVO: ${hzLabel} — opera desde esta profundidad temporal. El cierre generativo, los patrones que nombres y las preguntas que hagas deben estar calibrados a este horizonte, no solo al estado presente.`:'';
 return `Eres LUCID — interlocutor de desarrollo cognitivo personal de Fernando.
 
 IDENTIDAD: No eres terapeuta, coach ni diario. Tu propuesta de valor: el único interlocutor que conoce profundamente a Fernando, no tiene agenda propia, y mejora su comprensión con cada conversación.
@@ -235,7 +308,7 @@ PRINCIPIOS CONSTITUCIONALES:
 REGLAS ABSOLUTAS DE LENGUAJE:
 — Siempre conducta, nunca identidad: "en este contexto tu pensamiento fue hacia..." NO "eres catastrofista"
 — Humildad epistémica permanente: solo conoces lo que Fernando describe. "Según lo que describes..." — nunca afirmar sobre realidad externa
-— Máximo 280 palabras total
+— Máximo 280 palabras total${hzCtx}
 
 ESTRUCTURA DE RESPUESTA — usa exactamente estos marcadores:
 [L] [2 líneas máx: estado emocional detectado + sesgo activo si lo hay + necesidad inferida. Si hay referencia longitudinal relevante, inclúyela. Factual, sin juicio.]
@@ -253,50 +326,46 @@ MEMORIA LONGITUDINAL:
 ${memCtx}`}
 
 function buildProSys(memCtx){
-const DILEMAS_UNIVERSALES=[
-  // Identidad y propósito
-  {area:"Identidad",pregunta:"¿Hay una brecha entre la persona que proyectas y quien eres cuando nadie te ve? ¿Cuánto te cuesta mantenerla?"},
-  {area:"Propósito",pregunta:"¿Cuál es el trabajo más importante de tu vida? ¿Cuánto tiempo real le dedicas esta semana?"},
-  {area:"Legado",pregunta:"¿Qué quieres que recuerden de ti las personas que más quieres? ¿Lo que estás haciendo esta semana construye eso?"},
-  // Miedo y parálisis
-  {area:"Miedo",pregunta:"¿Qué oportunidad llevas tiempo evitando porque el riesgo de fracasar es visible y el coste de no intentarlo, invisible?"},
-  {area:"Conversaciones pendientes",pregunta:"¿Qué conversación llevas meses posponiendo? ¿Qué te dice sobre ti que aún no la hayas tenido?"},
-  {area:"Comodidad",pregunta:"¿Estás evitando algo difícil llamándolo 'no es el momento'? ¿Cuándo sería el momento?"},
-  // Integridad y valores
-  {area:"Valores",pregunta:"¿Cuál es el valor que más declaras y menos practicas? ¿Qué coste tiene esa brecha?"},
-  {area:"Decisión postergada",pregunta:"¿Hay una decisión que llevas posponiendo y que ya sabes cómo tienes que tomar?"},
-  {area:"Autoengaño",pregunta:"¿Cuál es la narrativa sobre ti mismo que te limita y que llevas tanto tiempo usando que ya ni la cuestionas?"},
-  // Relaciones
-  {area:"Relaciones",pregunta:"¿A quién no le has dicho lo que necesitas decirle? ¿Por qué llevas sin decirlo?"},
-  {area:"Expectativas",pregunta:"¿Qué estás esperando que alguien cambie sin habérselo pedido directamente?"},
-  // Finitud y urgencia
-  {area:"Finitud",pregunta:"Si supieras que tienes cinco años de salud plena, ¿qué cambiarías en tu vida esta semana? ¿Por qué no lo estás haciendo?"},
-  {area:"Urgencia",pregunta:"¿Cuánto de lo que haces hoy tiene sentido en un horizonte de diez años?"},
-  // Control y aceptación
-  {area:"Control",pregunta:"¿Qué llevas como carga tuya que no lo es? ¿Y qué dejas sin atender creyendo que no depende de ti?"},
-  {area:"Crecimiento",pregunta:"¿Qué has dejado de desarrollar en los últimos dos años porque dejó de ser nuevo? ¿Lo dejaste crecer o lo dejaste morir?"},
-  // Estándares y rendición
-  {area:"Estándares",pregunta:"¿Estás midiendo tu desempeño con el estándar que realmente quieres tener, o con el que el entorno acepta?"},
-  {area:"Rendición",pregunta:"¿Hay algo en lo que estés rindiéndote poco a poco, tan despacio que casi no lo notas?"}
+const CINCO_PREGUNTAS_MAESTRAS=[
+  '¿Quién soy realmente? — Rogers, Jung, Sartre, Sócrates',
+  '¿Para qué estoy aquí? — Frankl, Aristóteles, Campbell',
+  '¿Qué temo realmente? — Jung (sombra), Yalom, Brown',
+  '¿A quién amo y cómo? — Fromm, Yalom, Rogers',
+  '¿Cómo quiero haber vivido? — Yalom, Heidegger, Séneca'
 ];
 
 return `Eres LUCID. Fernando no ha escrito — tú inicias la sesión.
-Tu función: identificar el punto de mayor palanca cognitiva para hoy y crear la apertura perfecta.
+Tu función: identificar el punto de mayor palanca cognitiva y crear la apertura perfecta.
+
+CINCO PREGUNTAS MAESTRAS (todas las conversaciones orbitan en torno a una de estas):
+${CINCO_PREGUNTAS_MAESTRAS.join('\n')}
+
+HORIZONTES TEMPORALES (eje de profundidad temporal):
+presente — esta semana, estado operativo inmediato
+este_ano — trabajo, ascenso, transformación del equipo, objetivos del año
+varios_anos — soberanía, proyectos congelados, identidad en construcción (2-5 años)
+matrimonio — pareja, comunicación real, intimidad, lo no dicho
+paternidad — hijos, transmisión, romper o continuar patrones heredados
+legado — finitud, padre enfermo, qué permanece cuando no estés
+identidad — quién eres cuando nadie mira, sombra, individuación profunda
 
 LÓGICA DE SELECCIÓN (aplica en este orden de prioridad):
-1. Cierres generativos anteriores no seguidos → accountability directo y sin rodeos
-2. Patrón repetido sin cambio → nombrarlo desde un ángulo diferente al anterior
-3. Decisión evitada o resistencia activa clara → empujar hacia ella
-4. Si la memoria no ofrece un punto de alta palanca o la sesión es inicial → selecciona del catálogo de dilemas universales el que más resuene con el perfil real del usuario
+1. Cierres generativos anteriores no seguidos → accountability directo sobre el horizonte en que se generaron
+2. Patrón repetido sin cambio → nombrarlo desde ángulo diferente, desde el horizonte más relevante
+3. Decisión evitada o resistencia activa → empujar hacia ella desde el horizonte correcto
+4. Sin memoria suficiente → selecciona del catálogo:
+   a. Identifica qué PREGUNTA MAESTRA está más viva en el perfil ahora mismo
+   b. Elige el HORIZONTE con mayor tensión potencial (evita el explorado recientemente)
+   c. Selecciona la pregunta de ese horizonte con mayor fricción para Fernando específicamente
 
-CATÁLOGO DE DILEMAS UNIVERSALES (usar cuando memoria es insuficiente o para enriquecer el ángulo):
-${DILEMAS_UNIVERSALES.map(function(d){return'['+d.area+'] '+d.pregunta}).join('\n')}
+CATÁLOGO DE DILEMAS (horizonte · área · fuente filosófica):
+${DILEMAS_UNIVERSALES.map(function(d){return'['+d.horizonte.toUpperCase()+'·'+d.area+'·'+d.fuente+'] '+d.pregunta}).join('\n')}
 
-CRITERIOS DE SELECCIÓN DEL DILEMA UNIVERSAL:
-— Elige el que genere mayor tensión productiva dado el perfil real
-— Prioriza dilemas que el usuario probablemente evita, no los que ya ha explorado
-— Conecta el dilema universal con una tensión concreta del perfil cuando sea posible
-— Alterna entre áreas en sesiones sucesivas — no repitas el mismo terreno
+CRITERIOS FINALES:
+— Elige lo que genere mayor tensión productiva, no lo que sea más cómodo
+— Prioriza lo que Fernando probablemente evita, no lo que ya ha explorado
+— Conecta el dilema con una tensión concreta del perfil cuando sea posible
+— Alterna horizontes en sesiones sucesivas — no repitas el mismo terreno
 
 MEMORIA: ${memCtx}
 PERFIL: ${BASE}
@@ -304,7 +373,7 @@ PERFIL: ${BASE}
 INSTRUCCIÓN FINAL: No inicies con pregunta reflexiva genérica. La apertura debe empujar hacia adelante — nombrar una tensión concreta y crear la necesidad de responder, no de contemplar.
 
 Responde SOLO JSON válido sin markdown:
-{"topic":"tensión concreta en 1 frase","prompt":"instrucción directa para LUCID — qué confrontar y cómo abrir sin preguntas blandas, empujando hacia acción o reconocimiento","source":"memory|universal","dilema_area":"el área del catálogo usada si source=universal, si no null"}`}
+{"topic":"tensión concreta en 1 frase","horizonte":"presente|este_ano|varios_anos|matrimonio|paternidad|legado|identidad","pregunta_maestra":"la de las 5 que organiza esta sesión","prompt":"instrucción directa para LUCID — qué confrontar y cómo abrir sin preguntas blandas","source":"memory|universal","dilema_area":"área del catálogo si source=universal, null si source=memory","fuente_filosofica":"autor o marco si source=universal, null si source=memory"}`}
 
 const MEM_SYS=`Eres el sistema de memoria longitudinal de LUCID. Actualiza el perfil cognitivo.
 REGLAS: Detecta REPETICIÓN SIN CAMBIO. Compromisos incumplidos 2+ sesiones: marcar como patrón. Diferencia insight NUEVO de RECICLADO.
@@ -585,7 +654,9 @@ function rSess(a){
     return;}
   // active phase
   var orch=S.sess.orch||{};
-  var proLabel=S.sess.type==='lucid'&&orch.topic?'<div class="pro-topic">⚡ '+esc(orch.topic)+'</div>':'';
+  var hzDisplay=orch.temporal_horizon&&orch.temporal_horizon!=='presente'?' · <span style="opacity:.55;font-size:.66rem">'+esc(HORIZONTE_LABEL[orch.temporal_horizon]||orch.temporal_horizon)+'</span>':'';
+  var fDisplay=orch.fuente_filosofica?' · <span style="opacity:.42;font-size:.62rem;font-style:italic">'+esc(orch.fuente_filosofica)+'</span>':'';
+  var proLabel=S.sess.type==='lucid'&&orch.topic?'<div class="pro-topic">⚡ '+esc(orch.topic)+hzDisplay+fDisplay+'</div>':'';
   var convHtml='<div class="conv">';
   var isLoading=S.sess.conversation.some(function(m){return m.role==='loading'});
   S.sess.conversation.forEach(function(msg){
@@ -704,7 +775,7 @@ async function doSub(){
     S.sess.apiHistory.push({role:'user',content:S.sess.input});
     S.sess.conversation.push({role:'loading'});R();scrollB();
     var mem=loadMem();
-    var raw=await api(buildLucidSys(orch.mode||'socratico',buildMemCtx(mem)),S.sess.apiHistory,MODEL_DEEP);
+    var raw=await api(buildLucidSys(orch.mode||'socratico',buildMemCtx(mem),orch.temporal_horizon||'presente'),S.sess.apiHistory,MODEL_DEEP);
     var parsed=parseLucid(raw);
     S.sess.apiHistory.push({role:'assistant',content:raw});
     S.sess.conversation=S.sess.conversation.filter(function(m){return m.role!=='loading'});
@@ -725,7 +796,7 @@ async function doRep(){
   try{
     var mem=loadMem();
     var mode=S.sess.orch?S.sess.orch.mode:'socratico';
-    var raw=await api(buildLucidSys(mode,buildMemCtx(mem)),S.sess.apiHistory,MODEL_DEEP);
+    var raw=await api(buildLucidSys(mode,buildMemCtx(mem),(S.sess.orch&&S.sess.orch.temporal_horizon)||'presente'),S.sess.apiHistory,MODEL_DEEP);
     var parsed=parseLucid(raw);
     S.sess.apiHistory.push({role:'assistant',content:raw});
     S.sess.conversation=S.sess.conversation.filter(function(m){return m.role!=='loading'});
@@ -744,13 +815,14 @@ async function doProLucid(){
     var mem=loadMem();
     var r=await api(buildProSys(buildMemCtx(mem)),[{role:'user',content:'¿Qué tensión necesita confrontar Fernando hoy?'}],MODEL_FAST);
     var d=JSON.parse(r.replace(/```json|```/g,'').trim());
-    S.sess.orch={mode:'confrontador',topic:d.topic||''};
+    S.sess.orch={mode:'confrontador',topic:d.topic||'',temporal_horizon:d.horizonte||'presente',fuente_filosofica:d.fuente_filosofica||null};
     S.sess.input='[LUCID inicia] '+(d.topic||'');
     S.sess.phase='active';
-    var proPrompt=(d.prompt||'Confronta a Fernando sobre: '+d.topic)+'\n\nInicia la conversación directamente. Sin preguntas reflexivas — empuja hacia adelante.';
+    var hzLabel=HORIZONTE_LABEL[d.horizonte||'presente']||d.horizonte||'presente';
+    var proPrompt=(d.prompt||'Confronta a Fernando sobre: '+d.topic)+'\n\nHorizonte temporal: '+hzLabel+'.\nInicia la conversación directamente. Sin preguntas reflexivas — empuja hacia adelante.';
     S.sess.apiHistory.push({role:'user',content:proPrompt});
     S.sess.conversation.push({role:'loading'});R();
-    var raw=await api(buildLucidSys('confrontador',buildMemCtx(mem)),S.sess.apiHistory,MODEL_DEEP);
+    var raw=await api(buildLucidSys('confrontador',buildMemCtx(mem),d.horizonte||'presente'),S.sess.apiHistory,MODEL_DEEP);
     var parsed=parseLucid(raw);
     S.sess.apiHistory.push({role:'assistant',content:raw});
     S.sess.conversation=S.sess.conversation.filter(function(m){return m.role!=='loading'});
