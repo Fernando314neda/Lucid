@@ -125,6 +125,17 @@ const HARDCODED_KEY = '';
 function gk(){return HARDCODED_KEY||localStorage.getItem('lucid-api-key')||''}
 function setk(k){k?localStorage.setItem('lucid-api-key',k):localStorage.removeItem('lucid-api-key')}
 
+// ── CLOUD SYNC — GitHub Gist ──────────────────────────────────
+var SYNC={status:'idle',lastSync:null,error:null};
+function getGhToken(){return localStorage.getItem('lucid-gh-token')||''}
+function setGhToken(t){t?localStorage.setItem('lucid-gh-token',t):localStorage.removeItem('lucid-gh-token')}
+function getGistId(){return localStorage.getItem('lucid-gist-id')||''}
+function setGistId(id){id?localStorage.setItem('lucid-gist-id',id):localStorage.removeItem('lucid-gist-id')}
+function getLastSync(){return localStorage.getItem('lucid-last-sync')||''}
+function setLastSync(ts){localStorage.setItem('lucid-last-sync',ts)}
+function syncAge(){var ls=getLastSync();if(!ls)return'';var d=Date.now()-new Date(ls).getTime();if(d<60000)return' · ahora mismo';if(d<3600000)return' · hace '+Math.round(d/60000)+'m';if(d<86400000)return' · hace '+Math.round(d/3600000)+'h';return' · hace '+Math.round(d/86400000)+'d';}
+function ghHdrs(){return{'Authorization':'token '+getGhToken(),'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'}}
+
 // ── PERFIL BASE ──────────────────────────────────────────────
 const BASE=`FERNANDO — perfil completo:
 
@@ -479,9 +490,9 @@ async function updateMem(input,lucidRaw,mode){
         {text:nm.generativeClosureText,ts:Date.now(),followedUp:false},
         ...(mem.generativeClosures||[])
       ].slice(0,20);}
-    saveMem(updated);return updated;
+    saveMem(updated);gistPush();return updated;
   }catch(e){
-    mem.sessionCount=(mem.sessionCount||0)+1;mem.lastMode=mode;saveMem(mem);return mem;}}
+    mem.sessionCount=(mem.sessionCount||0)+1;mem.lastMode=mode;saveMem(mem);gistPush();return mem;}}
 
 // ── BACKUP / IMPORT ──────────────────────────────────────────
 function exportBackup(){
@@ -533,6 +544,77 @@ function persist(){
   if(idx>=0)ss[idx]=d;else ss.unshift(d);
   sss(ss.slice(0,50));S.sessions=lss();}
 
+// ── GIST SYNC FUNCTIONS ──────────────────────────────────────
+async function gistCreate(){
+  var data={version:'lucid-8.0',syncedAt:new Date().toISOString(),memory:loadMem(),sessions:lss()};
+  var r=await fetch('https://api.github.com/gists',{method:'POST',headers:ghHdrs(),body:JSON.stringify({description:'LUCID — Memoria cognitiva personal',public:false,files:{'lucid-data.json':{content:JSON.stringify(data)}}})});
+  if(!r.ok){var e=await r.json();throw new Error(e.message||'Error HTTP '+r.status);}
+  var d=await r.json();setGistId(d.id);setLastSync(data.syncedAt);return d.id;}
+
+async function gistPush(){
+  var token=getGhToken(),gistId=getGistId();if(!token||!gistId)return;
+  var prevPage=S.page;
+  SYNC.status='syncing';if(prevPage==='home'||prevPage==='memory')R();
+  try{
+    var data={version:'lucid-8.0',syncedAt:new Date().toISOString(),memory:loadMem(),sessions:lss()};
+    var r=await fetch('https://api.github.com/gists/'+gistId,{method:'PATCH',headers:ghHdrs(),body:JSON.stringify({files:{'lucid-data.json':{content:JSON.stringify(data)}}})});
+    if(!r.ok){var er=await r.json();throw new Error(er.message||'Error HTTP '+r.status);}
+    setLastSync(data.syncedAt);SYNC.status='ok';SYNC.error=null;
+  }catch(e){SYNC.status='error';SYNC.error=e.message;}
+  if(S.page==='home'||S.page==='memory')R();}
+
+async function gistPull(){
+  var token=getGhToken(),gistId=getGistId();if(!token||!gistId)return null;
+  try{
+    var r=await fetch('https://api.github.com/gists/'+gistId,{headers:ghHdrs()});
+    if(!r.ok)return null;
+    var d=await r.json();
+    var file=d.files&&d.files['lucid-data.json'];
+    if(!file||!file.content)return null;
+    var parsed=JSON.parse(file.content);
+    var cloudTs=new Date(parsed.syncedAt||0).getTime();
+    var localTs=new Date(getLastSync()||0).getTime();
+    if(cloudTs>localTs){
+      if(parsed.memory){saveMem(Object.assign({},EMPTY_MEM,parsed.memory));}
+      if(parsed.sessions)sss(parsed.sessions);
+      setLastSync(parsed.syncedAt);return'updated';}
+    return'current';
+  }catch(e){SYNC.error=e.message;return null;}}
+
+async function doGistSetup(){
+  var tokenEl=document.getElementById('gh-token'),gistEl=document.getElementById('gh-gist');
+  if(!tokenEl)return;
+  var token=tokenEl.value.trim(),gistId=gistEl?gistEl.value.trim():'';
+  if(!token){alert('Introduce tu Personal Access Token de GitHub.');return;}
+  setGhToken(token);SYNC.status='syncing';R();
+  try{
+    if(gistId){
+      setGistId(gistId);
+      var result=await gistPull();
+      if(!result){alert('No se pudo conectar al Gist.\nVerifica el token y el Gist ID.');setGhToken('');setGistId('');SYNC.status='idle';R();return;}
+      if(result==='updated'){S.sessions=lss();alert('¡Conectado! Memoria cargada desde la nube. Recargando...');location.reload();return;}
+      alert('¡Conectado! Tu memoria local está sincronizada con el Gist.');
+    }else{
+      var newId=await gistCreate();
+      alert('¡Gist creado!\n\nGist ID:\n'+newId+'\n\nGuárdalo — lo necesitarás para conectar desde iPhone o iPad.');
+    }
+    SYNC.status='ok';
+  }catch(e){
+    SYNC.status='error';SYNC.error=e.message;
+    alert('Error: '+e.message+'\n\nVerifica que el token tiene permiso "gist" habilitado.');
+    setGhToken('');setGistId('');
+  }
+  R();}
+
+function doGistDisconnect(){
+  if(!confirm('¿Desconectar el sync con GitHub?\nTu memoria local se mantiene intacta.'))return;
+  setGhToken('');setGistId('');setLastSync('');SYNC={status:'idle',lastSync:null,error:null};R();}
+
+function copyGistId(){
+  var id=getGistId();if(!id)return;
+  if(navigator.clipboard){navigator.clipboard.writeText(id).then(function(){alert('Gist ID copiado:\n'+id);}).catch(function(){alert('Gist ID:\n'+id);});}
+  else alert('Gist ID:\n'+id);}
+
 // ── UTILS ────────────────────────────────────────────────────
 function fd(ts){var d=new Date(ts),n=new Date(),df=n-d;if(df<864e5)return'Hoy · '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');if(df<1728e5)return'Ayer';return d.getDate()+' '+['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][d.getMonth()]}
 function tr(t,n){n=n||90;return t&&t.length>n?t.slice(0,n).trim()+'…':t||''}
@@ -555,7 +637,14 @@ function initCheck(){
   var mem=loadMem();
   S.sessions=lss();
   S.page=(mem.sessionCount>0||hasKey)?'home':'welcome';
-  R();}
+  R();
+  if(getGhToken()&&getGistId()){
+    SYNC.status='syncing';R();
+    gistPull().then(function(result){
+      if(result==='updated'){S.sessions=lss();if(loadMem().sessionCount>0||gk())S.page='home';}
+      SYNC.status=result?'ok':'error';
+      if(!result)SYNC.error='No se pudo conectar con GitHub';
+      R();});}}
 
 // ── RENDER ───────────────────────────────────────────────────
 function R(){
@@ -605,6 +694,11 @@ function rHome(a){
   var closureBlock='';
   if(mem.lastClosure){
     closureBlock='<div class="closure-reminder"><strong>Cierre generativo pendiente</strong>'+esc(mem.lastClosure)+'</div>';}
+  var syncBadge='';
+  if(getGhToken()&&getGistId()){
+    if(SYNC.status==='syncing')syncBadge='<div class="mem-badge" style="color:rgba(107,159,212,0.65)">⟳ Sincronizando...</div>';
+    else if(SYNC.status==='error')syncBadge='<div class="mem-badge" style="color:rgba(192,57,43,0.65)">⚠ Error sync · <a onclick="gistPush()" style="cursor:pointer;color:inherit">reintentar</a></div>';
+    else syncBadge='<div class="mem-badge" style="color:rgba(107,159,212,0.65)">☁ Sincronizado'+syncAge()+'</div>';}
   a.innerHTML=`<div class="home">
     <div class="ring">◈</div>
     <h1>LUCID</h1>
@@ -624,6 +718,7 @@ function rHome(a){
       </button>
     </div>
     ${memBadge}
+    ${syncBadge}
     ${S.sessions.length>0?'<div style="margin-top:14px"><button class="btn" onclick="S.page=\'history\';S.sessions=lss();R()">Historial ('+S.sessions.length+')</button></div>':''}
     <p style="margin-top:32px;font-size:.64rem;color:rgba(236,232,224,0.28);letter-spacing:.12em">5 MODOS · MEMORIA LONGITUDINAL · CIERRE GENERATIVO</p>
     <div class="cb">
@@ -741,7 +836,27 @@ function rMem(a){
       return'<div class="closure-item"><div class="closure-item-text">'+esc(c.text)+'</div><div class="closure-item-meta">'+fd(c.ts)+'</div></div>';
     }).join('');
     closureBlock='<div class="mem-sec"><div class="mem-title">Cierres generativos recientes</div>'+cl+'</div>';}
-  var backupBlock='<div style="margin-top:40px;padding:22px;border:1px solid rgba(212,176,86,0.25);border-radius:5px;background:rgba(212,176,86,0.04)"><div style="font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(212,176,86,0.75);margin-bottom:10px">Respaldo</div><div style="font-size:.76rem;color:rgba(236,232,224,0.6);line-height:1.6;margin-bottom:14px">Exporta tu memoria regularmente. Safari puede borrar localStorage si no visitas LUCID en 7 días.</div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn bg" style="padding:10px 22px;font-size:.66rem" onclick="exportBackup()">↓ Exportar</button><button class="btn" style="padding:10px 22px;font-size:.66rem" onclick="triggerImport(function(){alert(\'Importado. Recargando...\');location.reload();})">↑ Importar</button></div></div>';
+  var isGhConfigured=!!(getGhToken()&&getGistId());
+  var ghSection=isGhConfigured?
+    '<div style="margin-top:20px;padding:22px;border:1px solid rgba(107,159,212,0.3);border-radius:5px;background:rgba(107,159,212,0.04)">'
+    +'<div style="font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(107,159,212,0.75);margin-bottom:12px">☁ Sync Multi-Dispositivo — Activo</div>'
+    +'<div style="font-size:.74rem;color:rgba(236,232,224,0.55);margin-bottom:4px">Gist ID: <span style="font-family:monospace;color:rgba(107,159,212,0.85)">'+getGistId().slice(0,12)+'...</span></div>'
+    +(SYNC.status==='ok'?'<div style="font-size:.72rem;color:rgba(122,158,126,0.75);margin-bottom:16px">✓ Sincronizado'+syncAge()+'</div>':SYNC.status==='error'?'<div style="font-size:.72rem;color:rgba(192,57,43,0.75);margin-bottom:16px">⚠ '+esc(SYNC.error||'Error de conexión')+'</div>':'<div style="font-size:.72rem;color:rgba(107,159,212,0.55);margin-bottom:16px">⟳ Sincronizando...</div>')
+    +'<div style="display:flex;gap:10px;flex-wrap:wrap">'
+    +'<button class="btn" style="padding:10px 22px;font-size:.66rem;border-color:rgba(107,159,212,0.5);color:rgba(107,159,212,0.85)" onclick="gistPush()">↑ Forzar sync</button>'
+    +'<button class="btn" style="padding:10px 22px;font-size:.66rem;border-color:rgba(107,159,212,0.5);color:rgba(107,159,212,0.85)" onclick="copyGistId()">Copiar Gist ID</button>'
+    +'<button class="btn" style="padding:10px 22px;font-size:.66rem" onclick="doGistDisconnect()">Desconectar</button>'
+    +'</div></div>'
+    :
+    '<div style="margin-top:20px;padding:22px;border:1px solid rgba(107,159,212,0.25);border-radius:5px;background:rgba(107,159,212,0.04)">'
+    +'<div style="font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(107,159,212,0.75);margin-bottom:10px">☁ Sync Multi-Dispositivo</div>'
+    +'<div style="font-size:.76rem;color:rgba(236,232,224,0.6);line-height:1.6;margin-bottom:16px">Sincroniza tu memoria entre iPhone y iPad vía GitHub Gist. Requiere un Personal Access Token de GitHub con permiso <em>gist</em>.</div>'
+    +'<div style="margin-bottom:8px"><input class="ki" id="gh-token" type="password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="ghp_... · Personal Access Token"></div>'
+    +'<div style="margin-bottom:14px"><input class="ki" id="gh-gist" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Gist ID (opcional — se crea automáticamente si está vacío)"></div>'
+    +'<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn bg" style="padding:10px 28px;font-size:.66rem" onclick="doGistSetup()">Conectar →</button></div>'
+    +'<div style="margin-top:12px;font-size:.6rem;color:rgba(236,232,224,0.28);line-height:1.5">github.com → Settings → Developer settings → Personal access tokens → Generate new token → marcar solo el permiso <strong>gist</strong>.</div>'
+    +'</div>';
+  var backupBlock='<div style="margin-top:40px;padding:22px;border:1px solid rgba(212,176,86,0.25);border-radius:5px;background:rgba(212,176,86,0.04)"><div style="font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(212,176,86,0.75);margin-bottom:10px">Respaldo local</div><div style="font-size:.76rem;color:rgba(236,232,224,0.6);line-height:1.6;margin-bottom:14px">Exporta tu memoria regularmente. Safari puede borrar localStorage si no visitas LUCID en 7 días.</div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn bg" style="padding:10px 22px;font-size:.66rem" onclick="exportBackup()">↓ Exportar</button><button class="btn" style="padding:10px 22px;font-size:.66rem" onclick="triggerImport(function(){alert(\'Importado. Recargando...\');location.reload();})">↑ Importar</button></div></div>'+ghSection;
   var danger='<div style="margin-top:30px;text-align:center"><button class="btn" style="font-size:.62rem;color:rgba(192,57,43,0.6);border-color:rgba(192,57,43,0.3)" onclick="if(confirm(\'¿Borrar memoria? Esta acción no se puede deshacer.\')){localStorage.removeItem(\'lucid-mem\');goHome()}">Reiniciar memoria</button></div>';
   var content=mem.sessionCount===0?'<p style="color:rgba(236,232,220,0.5);font-style:italic;text-align:center;margin-top:60px">Sin memoria aún.</p>'+backupBlock:'<div style="font-size:.74rem;color:rgba(122,158,126,0.75);margin-bottom:32px">🧠 '+mem.sessionCount+' sesiones'+(mem.lastMode?' · último modo: '+esc(MODE_LABEL[mem.lastMode]||mem.lastMode):'')+'</div>'+ratioBlock+sec('Patrones sin cambio',mem.patterns)+sec('Sesgos activos',mem.activeBiases)+sec('Conflictos de valores',mem.valueConflicts)+sec('Decisiones evitadas',mem.avoidedDecisions)+sec('Resistencias activas',mem.activeResistances)+sec('Puntos ciegos',mem.blindSpots)+sec('Temas recurrentes',mem.recurringThemes)+sec('Evolución real',mem.growth)+sec('Insights activos',mem.keyInsights)+sec('Compromisos',mem.commitments)+closureBlock+(mem.emotionalState?'<div class="mem-sec"><div class="mem-title">Estado emocional basal</div><div style="font-size:.84rem;color:rgba(236,232,224,0.78);font-style:italic">'+esc(mem.emotionalState)+'</div></div>':'')+backupBlock+danger;
   a.innerHTML='<div class="se"><div class="sh"><div><div class="ls">LUCID</div><div class="ld">🧠 Memoria Longitudinal</div></div><button class="bb" onclick="goHome()">← Inicio</button></div>'+content+'</div>';}
@@ -759,7 +874,7 @@ function startLucid(){
   S.page='session';R();doProLucid();}
 function doStartFresh(){var k=document.getElementById('wkey');if(k)setk(k.value.trim());S.page='home';S.sessions=lss();R();}
 function oRev(id){S.review=S.sessions.find(function(s){return s.id===id});S.page='review';R();}
-function doDel(id){var s=lss().filter(function(x){return x.id!==id});sss(s);S.sessions=s;S.cdel=null;if(S.review&&S.review.id===id)goHome();else R();}
+function doDel(id){var s=lss().filter(function(x){return x.id!==id});sss(s);S.sessions=s;S.cdel=null;gistPush();if(S.review&&S.review.id===id)goHome();else R();}
 function updW(){var ok=S.sess.input.length>=20;var b=document.getElementById('sb');if(b){b.disabled=!ok;b.className=ok?'btn bg':'btn'}var c=document.getElementById('ctr');if(c)c.textContent=ok?'':Math.max(0,20-S.sess.input.length)+' caracteres más';}
 
 // ── SESSION FLOW ─────────────────────────────────────────────
