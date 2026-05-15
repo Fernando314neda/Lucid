@@ -285,7 +285,7 @@ const depthCtx=tn===1
   ?'TURNO 2 — MOVIMIENTO LATERAL: Fernando ha respondido. No te quedes en el mismo hilo. Lee qué revela su respuesta sobre una TENSIÓN O BRECHA DIFERENTE. Cierra el hilo actual en 1 línea y abre el nuevo ángulo. La pregunta guía: ¿qué dice lo que acaba de decir sobre algo que todavía no hemos tocado? Extensión: 220-320 palabras.'
   :tn>=3
   ?'TURNO '+tn+' — EXPANSIÓN: La sesión tiene ya varios intercambios. Elige el ángulo con mayor potencial de desarrollo que ha emergido — no la continuación del hilo sino la implicación más interesante de lo que se ha dicho. Conecta brevemente con el hilo y abre el nuevo territorio. Habla como alguien que ve el patrón completo de la sesión y sabe hacia dónde debe ir. Sin estructura rígida. Lo que cuenta es mover a Fernando hacia terreno que no había considerado.'
-  :''
+  :'';
 return `Eres LUCID — interlocutor de desarrollo cognitivo personal de Fernando.
 
 IDENTIDAD: No eres terapeuta, coach ni diario. Eres un interlocutor de desarrollo — alguien que conoce profundamente a Fernando, ve con claridad tanto lo que está roto como lo que falta construir, y no tiene agenda propia.
@@ -903,20 +903,19 @@ function rNorte(a){
     viewHtml='<div style="margin-bottom:28px;padding:24px 0;border-bottom:1px solid rgba(236,232,224,0.1)">'
       +'<p style="font-size:.96rem;line-height:2;color:rgba(236,232,224,0.88);white-space:pre-wrap">'+esc(saved)+'</p>'
       +'</div>'
-      +'<button class="btn bg" style="padding:11px 28px;font-size:.68rem;margin-top:4px" onclick="S.norteEditing=true;S.norteDraft=loadNorte();R()">Editar →</button>';}
+      +'<button class="btn bg" style="padding:11px 28px;font-size:.68rem;margin-top:4px" onclick="doNorteEdit()">Editar &#8594;</button>';}
   else{
-    viewHtml='<p style="font-size:.76rem;color:rgba(236,232,224,0.5);line-height:1.75;margin-bottom:24px">No son metas ni logros — son conductas concretas del hombre que estás construyendo. Cómo habla, cómo decide, cómo actúa. Escribe en presente: "El hombre que soy es..."</p>'
-      +'<textarea id="norte-ta" style="width:100%;min-height:200px;background:rgba(236,232,224,0.03);border:none;border-bottom:1px solid rgba(212,176,86,0.3);color:var(--text);font-size:.94rem;font-family:Georgia,serif;outline:none;resize:none;caret-color:var(--gold);padding:12px 0;line-height:1.9" placeholder="Da feedback directo sin añadir caveats innecesarios.
-Expone sus ideas en público con regularidad, aunque sienta incomodidad.
-Ejecuta al menos un proyecto creativo propio, sin esperar condiciones perfectas.
-Genera valor propio independiente de cualquier estructura...'">'+esc(S.norteDraft||'')+'</textarea>'
+    viewHtml='<p style="font-size:.76rem;color:rgba(236,232,224,0.5);line-height:1.75;margin-bottom:24px">No son metas ni logros — son conductas concretas del hombre que estás construyendo. Cómo habla, cómo decide, cómo actúa. Escribe en presente.</p>'
+      +'<textarea id="norte-ta" style="width:100%;min-height:200px;background:rgba(236,232,224,0.03);border:none;border-bottom:1px solid rgba(212,176,86,0.3);color:var(--text);font-size:.94rem;font-family:Georgia,serif;outline:none;resize:none;caret-color:var(--gold);padding:12px 0;line-height:1.9" placeholder="Da feedback directo sin caveats. Expo mi trabajo en público con regularidad. Ejecuto proyectos propios sin esperar condiciones perfectas...">'+esc(S.norteDraft||'')+'</textarea>'
       +'<div style="display:flex;gap:10px;margin-top:20px">'
-      +'<button class="btn bg" style="padding:11px 28px;font-size:.68rem" onclick="doSaveNorte()">Guardar →</button>'
-      +(saved?'<button class="btn" style="padding:11px 20px;font-size:.68rem" onclick="S.norteEditing=false;S.norteDraft='';R()">Cancelar</button>':'')
+      +'<button class="btn bg" style="padding:11px 28px;font-size:.68rem" onclick="doSaveNorte()">Guardar &#8594;</button>'
+      +(saved?'<button class="btn" style="padding:11px 20px;font-size:.68rem" onclick="doNorteCancelEdit()">Cancelar</button>':'')
       +'</div>';}
-  a.innerHTML='<div class="se"><div class="sh"><div><div class="ls">LUCID</div><div class="ld">◆ Mi Norte</div></div><button class="bb" onclick="goHome()">← Inicio</button></div>'
-    +'<p style="font-size:.78rem;color:rgba(236,232,224,0.5);line-height:1.7;margin-bottom:28px">El hombre que estás construyendo. LUCID lo tiene presente en cada sesión — no para presionarte sino para orientar el desarrollo.</p>'
+  a.innerHTML='<div class="se"><div class="sh"><div><div class="ls">LUCID</div><div class="ld">&#9670; Mi Norte</div></div><button class="bb" onclick="goHome()">&#8592; Inicio</button></div>'
+    +'<p style="font-size:.78rem;color:rgba(236,232,224,0.5);line-height:1.7;margin-bottom:28px">El hombre que estás construyendo. LUCID lo tiene presente en cada sesión — para orientar el desarrollo, no para presionarte.</p>'
     +viewHtml+'</div>';}
+function doNorteEdit(){S.norteEditing=true;S.norteDraft=loadNorte();R();}
+function doNorteCancelEdit(){S.norteEditing=false;S.norteDraft='';R();}
 
 function doSaveNorte(){
   var ta=document.getElementById('norte-ta');
