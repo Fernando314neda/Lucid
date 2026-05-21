@@ -1,1 +1,1207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LUCID v13">
+<meta name="theme-color" content="#15151E">
+<title>LUCID</title>
+<style>
+:root{--bg:#15151E;--bg2:#1E1E2A;--text:#ECE8E0;--gold:#D4B056;--gold-bright:#E6C270;--dim:rgba(236,232,224,0.42);--faint:rgba(236,232,224,0.14);--red:#B85050;--green:#7AB87A}
+*{box-sizing:border-box;-webkit-font-smoothing:antialiased;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Georgia,'Times New Roman',serif;min-height:100vh}
+::selection{background:rgba(212,176,86,0.3)}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:rgba(212,176,86,0.2);border-radius:2px}
+textarea,button,input{font-family:Georgia,serif}
+textarea::placeholder{color:rgba(236,232,224,0.28)}
+.glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 80% 50% at 15% 15%,rgba(212,176,86,0.06) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 85% 85%,rgba(107,159,212,0.05) 0%,transparent 60%)}
+.pg{position:relative;z-index:1}
 
+/* ── HOME ── */
+.home{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 24px;text-align:center}
+.ring{width:64px;height:64px;border-radius:50%;border:1px solid rgba(212,176,86,0.45);display:flex;align-items:center;justify-content:center;margin-bottom:36px;font-size:26px;background:rgba(212,176,86,0.08);color:var(--gold-bright)}
+h1{font-size:clamp(2.6rem,7vw,4rem);font-weight:400;letter-spacing:.2em;margin-bottom:10px;line-height:1}
+.sub{font-size:.7rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(212,176,86,0.75);margin-bottom:48px}
+.tagline{max-width:420px;line-height:1.95;color:rgba(236,232,224,0.68);font-size:.9rem;margin-bottom:48px;font-style:italic}
+.btn{background:rgba(236,232,224,0.04);border:1px solid rgba(236,232,224,0.28);color:rgba(236,232,224,0.78);cursor:pointer;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;border-radius:3px;padding:13px 40px;transition:all .2s}
+.btn:hover{border-color:rgba(236,232,224,0.5);color:rgba(236,232,224,0.95);background:rgba(236,232,224,0.07)}
+.bg{border-color:rgba(212,176,86,0.7)!important;color:var(--gold-bright)!important;background:rgba(212,176,86,0.10)!important}.bg:hover{background:rgba(212,176,86,0.18)!important;color:#F0D080!important;border-color:rgba(212,176,86,0.9)!important}
+.btn:disabled{cursor:not-allowed;opacity:.35}
+.modes{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+.mb{padding:22px 32px;min-width:210px;display:flex;flex-direction:column;align-items:center;gap:6px;background:rgba(236,232,224,0.03);border:1px solid rgba(236,232,224,0.22);color:rgba(236,232,224,0.72);cursor:pointer;border-radius:4px;transition:all .25s;font-family:Georgia,serif}
+.mb:hover{border-color:rgba(212,176,86,0.6);color:var(--gold-bright);background:rgba(212,176,86,0.08)}
+.mb:disabled{cursor:not-allowed;opacity:.35}
+.mb .mi{font-size:1.3rem;margin-bottom:2px}.mb .mn{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase}.mb .md{font-size:.58rem;letter-spacing:.06em;opacity:.65}
+.mem-badge{font-size:.62rem;color:rgba(122,158,126,0.75);letter-spacing:.1em;margin-top:8px}
+.mem-badge a{color:rgba(122,158,126,0.75);cursor:pointer}
+.closure-reminder{margin:0 auto 32px;max-width:520px;padding:14px 18px;border-left:2px solid rgba(212,176,86,0.4);background:rgba(212,176,86,0.04);font-size:.78rem;color:rgba(236,232,224,0.6);line-height:1.7;font-style:italic}
+.closure-reminder strong{color:rgba(212,176,86,0.8);font-style:normal;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;display:block;margin-bottom:6px}
+
+/* ── WELCOME ── */
+.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 24px;text-align:center}
+.welcome-opts{display:flex;flex-direction:column;gap:16px;width:100%;max-width:340px;margin-top:40px}
+.welcome-opt{padding:22px 24px;border:1px solid rgba(236,232,224,0.2);border-radius:5px;cursor:pointer;text-align:left;background:rgba(236,232,224,0.03);transition:all .25s}
+.welcome-opt:hover{border-color:rgba(212,176,86,0.5);background:rgba(212,176,86,0.06)}
+.welcome-opt-title{font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-bright);margin-bottom:6px}
+.welcome-opt-desc{font-size:.76rem;color:rgba(236,232,224,0.55);line-height:1.6}
+.welcome-key{width:100%;max-width:340px;margin-top:32px}
+
+/* ── SESSION ── */
+.se{max-width:720px;margin:0 auto;padding:40px 24px 120px}
+.sh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:36px}
+.ls{font-size:.65rem;letter-spacing:.32em;text-transform:uppercase;color:rgba(212,176,86,0.7);margin-bottom:5px}
+.ld{font-size:.72rem;color:rgba(236,232,224,0.55);letter-spacing:.12em}
+.bb{background:none;border:none;color:rgba(236,232,224,0.55);cursor:pointer;font-size:.72rem;letter-spacing:.1em;padding:6px 10px;border-radius:3px;transition:all .2s}
+.bb:hover{color:rgba(236,232,224,0.85);background:rgba(236,232,224,0.05)}
+.pt{font-size:1.05rem;color:rgba(236,232,224,0.6);margin-bottom:38px;font-style:italic;line-height:1.85}
+.rb{width:100%;min-height:200px;background:rgba(236,232,224,0.03);border:none;border-top:1px solid var(--faint);border-bottom:1px solid var(--faint);color:var(--text);font-size:1.02rem;line-height:1.95;padding:26px 4px;resize:none;outline:none;caret-color:var(--gold)}
+.eb{padding:16px 20px;background:rgba(192,57,43,0.15);border:1px solid rgba(192,57,43,0.45);border-radius:4px;margin-bottom:32px;font-size:.88rem;color:#F4A0A0;line-height:1.5}
+
+/* ── CONVERSATION ── */
+.conv{display:flex;flex-direction:column;gap:24px;margin-bottom:32px}
+.msg-u{align-self:flex-end;max-width:86%}
+.msg-u-label{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(236,232,224,0.35);margin-bottom:6px;text-align:right}
+.msg-u-text{background:rgba(236,232,224,0.07);border:1px solid rgba(236,232,224,0.16);border-radius:12px 12px 3px 12px;padding:16px 20px;font-size:.94rem;line-height:1.88;color:rgba(236,232,224,0.88);white-space:pre-wrap;text-align:left}
+.msg-l{align-self:flex-start;max-width:94%;width:100%;animation:fi .5s ease both}
+.msg-l-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.msg-l-name{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(212,176,86,0.7)}
+.mode-badge{font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:10px;border:1px solid rgba(212,176,86,0.25);color:rgba(212,176,86,0.5)}
+.msg-reading{background:rgba(212,176,86,0.04);border:1px solid rgba(212,176,86,0.15);border-radius:3px 8px 8px 8px;padding:10px 16px;font-size:.78rem;line-height:1.7;color:rgba(236,232,224,0.5);font-style:italic;margin-bottom:8px;white-space:pre-wrap}
+.msg-body{background:rgba(212,176,86,0.06);border:1px solid rgba(212,176,86,0.22);border-radius:3px 12px 12px 12px;padding:22px 24px;font-size:.95rem;line-height:1.95;color:rgba(236,232,224,0.93);white-space:pre-wrap}
+.msg-closure{margin-top:8px;padding:12px 18px;border-left:2px solid rgba(212,176,86,0.5);background:rgba(212,176,86,0.05);border-radius:0 4px 4px 0;font-size:.88rem;color:rgba(236,232,224,0.7);line-height:1.75;font-style:italic}
+.msg-closure::before{content:'↳ ';color:rgba(212,176,86,0.7);font-style:normal}
+.msg-loading{align-self:flex-start;padding:16px 24px;background:rgba(212,176,86,0.05);border:1px solid rgba(212,176,86,0.18);border-radius:3px 12px 12px 12px}
+.pro-topic{margin-bottom:24px;padding:12px 18px;border:1px solid rgba(212,176,86,0.3);border-radius:4px;background:rgba(212,176,86,0.06);font-size:.78rem;color:rgba(212,176,86,0.8);letter-spacing:.08em;font-style:italic}
+.ci-wrap{margin-top:8px;padding-top:24px;border-top:1px solid rgba(212,176,86,0.15)}
+.ci{width:100%;min-height:80px;background:rgba(236,232,224,0.03);border:none;border-top:1px solid rgba(212,176,86,0.2);color:var(--text);font-size:.92rem;line-height:1.8;padding:14px 0;resize:none;outline:none;caret-color:var(--gold)}
+.ds{display:flex;gap:8px;align-items:center;padding:4px 0}
+.dt{width:5px;height:5px;border-radius:50%;animation:pu 1.5s ease-in-out infinite;opacity:.85}
+@keyframes pu{0%,80%,100%{transform:scale(.7);opacity:.35}40%{transform:scale(1.3);opacity:1}}
+@keyframes fi{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.saving{font-size:.66rem;color:rgba(212,176,86,0.6);text-align:center;margin-top:20px;font-style:italic}
+.tm{text-align:center;padding:60px 20px}
+.tl{font-size:.74rem;color:rgba(212,176,86,0.65);letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px}
+
+/* ── HISTORY ── */
+.hi{padding:22px 0;border-bottom:1px solid rgba(236,232,224,0.1);cursor:pointer;transition:background .2s}.hi:hover{background:rgba(236,232,224,0.04)}
+.hd{font-size:.66rem;color:rgba(236,232,224,0.5);letter-spacing:.1em}
+.hp{color:rgba(236,232,224,0.75);font-size:.92rem;line-height:1.7;margin-top:6px}
+.ht{font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:10px;border:1px solid rgba(212,176,86,0.35);color:rgba(212,176,86,0.7)}
+.db{background:none;border:none;color:rgba(236,232,224,0.3);cursor:pointer;font-size:.66rem;transition:color .2s;padding:4px 10px;border-radius:3px}.db:hover{color:rgba(192,57,43,0.85);background:rgba(192,57,43,0.05)}
+
+/* ── MEMORY ── */
+.mem-sec{margin-bottom:24px}
+.mem-title{font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(212,176,86,0.7);margin-bottom:8px}
+.mem-item{font-size:.84rem;color:rgba(236,232,224,0.78);line-height:1.7;padding:4px 0 4px 12px;border-left:2px solid rgba(236,232,224,0.12)}
+.ratio-bar{height:6px;border-radius:3px;background:rgba(236,232,224,0.1);overflow:hidden;margin:8px 0}
+.ratio-fill{height:100%;background:linear-gradient(90deg,rgba(212,176,86,0.6),rgba(107,159,212,0.6));border-radius:3px;transition:width .5s}
+.closure-item{padding:12px 16px;border:1px solid rgba(212,176,86,0.18);border-radius:4px;margin-bottom:10px;background:rgba(212,176,86,0.04)}
+.closure-item-text{font-size:.84rem;color:rgba(236,232,224,0.8);line-height:1.65;font-style:italic}
+.closure-item-meta{font-size:.58rem;color:rgba(236,232,224,0.38);margin-top:6px;letter-spacing:.08em}
+
+/* ── INPUTS ── */
+.ki{width:100%;background:rgba(236,232,224,0.06);border:1px solid rgba(236,232,224,0.22);color:var(--text);padding:13px 14px;font-size:.8rem;border-radius:3px;outline:none;font-family:'SF Mono','Menlo','Courier New',monospace;letter-spacing:0.02em;transition:all .2s}
+.ki:focus{border-color:rgba(212,176,86,0.7);background:rgba(236,232,224,0.09)}
+.ki::placeholder{color:rgba(236,232,224,0.3);font-family:'SF Mono','Menlo','Courier New',monospace}
+.cb{margin-top:40px;padding:22px;border:1px solid rgba(236,232,224,0.18);border-radius:5px;background:rgba(236,232,224,0.03)}
+
+
+/* ── NO-NEGOCIABLES ── */
+.nn-item{padding:20px 0;border-bottom:1px solid rgba(236,232,224,0.08)}
+.nn-valor{font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-bright);margin-bottom:8px}
+.nn-conducta{font-size:.92rem;color:rgba(236,232,224,0.82);line-height:1.75}
+.nn-actions{display:flex;gap:16px;margin-top:10px}
+.nn-act{background:none;border:none;cursor:pointer;font-size:.6rem;color:rgba(236,232,224,0.28);font-family:Georgia,serif;letter-spacing:.1em;padding:0;transition:color .2s}
+.nn-act:hover{color:rgba(212,176,86,0.75)}
+.nn-act.del:hover{color:rgba(192,57,43,0.7)}
+.nn-form{padding:20px;border:1px solid rgba(212,176,86,0.2);border-radius:4px;background:rgba(212,176,86,0.03);margin:16px 0}
+.nn-form-label{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(212,176,86,0.6);margin-bottom:6px;display:block;margin-top:14px}
+.nn-empty{color:rgba(236,232,224,0.35);font-style:italic;font-size:.88rem;text-align:center;padding:48px 0}
+
+/* ── PERSPECTIVA DIRECTA [P] ── */
+.msg-perspective{margin-top:10px;padding:14px 18px;background:rgba(236,232,224,0.04);border:1px solid rgba(236,232,224,0.14);border-radius:4px;font-size:.9rem;color:rgba(236,232,224,0.78);line-height:1.85}
+.msg-perspective-label{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(236,232,224,0.32);margin-bottom:7px}
+
+
+/* ── FORM INPUTS (No-Negociables) ── */
+.sim-inp{width:100%;background:rgba(236,232,224,0.06);border:1px solid rgba(236,232,224,0.22);color:var(--text);padding:13px 14px;font-size:.8rem;border-radius:3px;outline:none;font-family:Georgia,serif;transition:border-color .2s,background .2s}
+.sim-inp:focus{border-color:rgba(212,176,86,0.7);background:rgba(236,232,224,0.09)}
+.sim-ta{width:100%;min-height:90px;background:rgba(236,232,224,0.06);border:1px solid rgba(236,232,224,0.22);color:var(--text);padding:13px 14px;font-size:.8rem;border-radius:3px;outline:none;font-family:Georgia,serif;resize:none;line-height:1.7;transition:border-color .2s,background .2s}
+.sim-ta:focus{border-color:rgba(212,176,86,0.7);background:rgba(236,232,224,0.09)}
+/* ── DESPACHO / PROYECTAR ── */
+.msg-despacho{background:rgba(107,159,212,0.07);border:1px solid rgba(107,159,212,0.24);border-radius:3px 12px 12px 12px;padding:22px 24px;font-size:.95rem;line-height:1.95;color:rgba(236,232,224,0.93);white-space:pre-wrap}
+.msg-proyectar{background:rgba(122,184,122,0.07);border:1px solid rgba(122,184,122,0.24);border-radius:3px 12px 12px 12px;padding:22px 24px;font-size:.95rem;line-height:1.95;color:rgba(236,232,224,0.93);white-space:pre-wrap}
+
+/* ── INFORME COGNITIVO ── */
+.report-block{margin-top:28px;padding:22px 24px;border:1px solid rgba(212,176,86,0.2);border-radius:5px;background:rgba(212,176,86,0.03)}
+.report-text{font-size:.88rem;color:rgba(236,232,224,0.82);line-height:1.88;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div id="app" class="pg"></div>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// LUCID v13.0 — Sistema de Desarrollo Cognitivo Personal
+// Modos: Despacho (inteligencia exterior) + Proyección (adelante)
+// ═══════════════════════════════════════════════════════════════
+
+const MODEL_FAST = 'claude-haiku-4-5-20251001';
+const MODEL_DEEP  = 'claude-sonnet-4-6';
+
+// ── API KEY ──────────────────────────────────────────────────
+const HARDCODED_KEY = '';
+function gk(){return HARDCODED_KEY||localStorage.getItem('lucid-api-key')||''}
+function setk(k){k?localStorage.setItem('lucid-api-key',k):localStorage.removeItem('lucid-api-key')}
+
+// ── CLOUD SYNC — GitHub Gist ──────────────────────────────────
+var SYNC={status:'idle',lastSync:null,error:null};
+function getGhToken(){return localStorage.getItem('lucid-gh-token')||''}
+function setGhToken(t){t?localStorage.setItem('lucid-gh-token',t):localStorage.removeItem('lucid-gh-token')}
+function getGistId(){return localStorage.getItem('lucid-gist-id')||''}
+function setGistId(id){id?localStorage.setItem('lucid-gist-id',id):localStorage.removeItem('lucid-gist-id')}
+function getLastSync(){return localStorage.getItem('lucid-last-sync')||''}
+function setLastSync(ts){localStorage.setItem('lucid-last-sync',ts)}
+function syncAge(){var ls=getLastSync();if(!ls)return'';var d=Date.now()-new Date(ls).getTime();if(d<60000)return' · ahora mismo';if(d<3600000)return' · hace '+Math.round(d/60000)+'m';if(d<86400000)return' · hace '+Math.round(d/3600000)+'h';return' · hace '+Math.round(d/86400000)+'d';}
+function ghHdrs(){return{'Authorization':'token '+getGhToken(),'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'}}
+
+// ── PERFIL BASE ──────────────────────────────────────────────
+const BASE=`FERNANDO — perfil completo:
+
+IDENTIDAD Y FAMILIA: ~40 años. Ciudad Real (España). Cádiz = felicidad plena, vínculo con su padre. Pareja (entusiasta del arte), hijos. Padre gravemente enfermo: cáncer de pulmón con metástasis cerebral — moldea cómo piensa sobre finitud y legado. Temporada formativa en Londres haciendo trabajo manual: humildad real y aprecio por el esfuerzo.
+
+VALORES Y CARÁCTER: Familia, integridad, estoicismo, responsabilidad, simplicidad. No extravagante. Referente vital: Joe Rogan (aprender en público, flow físico, conversación profunda). Finisher, no wanderer — Ironman completado, BJJ activo. Mente sistémica: se aburre sin problema real que resolver.
+
+VULNERABILIDADES (usar con precisión, no con condescendencia): Miedo profundo a la exposición pública — raíz en bullying infantil. Aprendió a decir lo que el otro quiere oír en vez de expresarse — opera incluso con superiores y familia. Aislamiento social significativo en vida adulta. Patrón heredado del padre: insatisfacción profesional crónica.
+
+TRABAJO: People manager corporativo, SAP HANA/S4HANA, Microsoft. Copilot oficial — usa Claude como capa estratégica real. Sin background técnico en código.
+
+ESTRATEGIA ACTUAL (operar desde aquí): Toda la energía al ascenso jerárquico (~2 años). Problema real: transformar cultura de entrega del equipo — el problema es el estándar, no las personas. Patrón a corregir: suaviza feedback y absorbe errores.
+
+PROYECTOS CONGELADOS (vivos, no ejecutando): Libro de principios para hijos. Podcast largo en español estilo Rogan/Ferriss. LUCID como legado cognitivo intergeneracional.
+
+TESIS DE FONDO: "Si generas valor individual, no temes a nadie." Objetivo real = soberanía financiera, creativa, geográfica.
+
+CÓMO HABLARLE: Directo, sin rodeos. Cero adulación. Análisis + recomendación. Asume inteligencia sistémica.`;
+
+// ── MODE CONFIG ──────────────────────────────────────────────
+const MODE_LABEL = {regulacion:'Regulación',espejo:'Espejo',socratico:'Socrático',estructurador:'Estructurador',confrontador:'Confrontador',validacion:'Validación',proyectar:'Proyección',despacho:'Despacho'};
+const MODE_ICON  = {regulacion:'🌊',espejo:'🪞',socratico:'◉',estructurador:'⧖',confrontador:'⚡',validacion:'✓',proyectar:'→',despacho:'◎'};
+const HORIZONTE_LABEL = {presente:'Esta semana',este_ano:'Este año',varios_anos:'Varios años',matrimonio:'Matrimonio',paternidad:'Paternidad',legado:'Legado y finitud',identidad:'Identidad profunda'};
+
+// ── PROMPTS ──────────────────────────────────────────────────
+
+function orchSys(memCtx){
+return `Eres el sistema de calibración de LUCID. Analiza el texto y determina el modo de intervención óptimo.
+Responde SOLO JSON válido, sin markdown, sin texto adicional:
+{"mode":"regulacion|espejo|socratico|estructurador|confrontador|validacion|proyectar","cierre_tipo":"pregunta|accion|cierre","tolerance":"green|yellow|red","emotional_state":"...","active_bias":"...o null","inferred_need":"procesar|decidir|entender|ser_retado|actuar","longitudinal_note":"...o null","temporal_horizon":"presente|este_ano|varios_anos|matrimonio|paternidad|legado|identidad"}
+
+CRITERIOS DE MODO:
+regulacion — crisis aguda, desbordamiento emocional, incapacidad de estructurar, activación muy alta
+espejo — carga emocional alta, circularidad en el razonamiento, primera persona muy intenso, necesidad de ser visto
+socratico — pregunta abierta, dilema en equilibrio, el usuario puede llegar solo con las preguntas correctas
+estructurador — input largo y desordenado, múltiples temas mezclados, agobio, confusión táctica
+confrontador — contradicción clara con valores declarados, patrón repetido no reconocido, racionalización evidente — SOLO si tolerance=green
+validacion — el usuario llega con claridad genuina y un camino coherente con sus valores: honestidad real, sin contradicción visible, sin racionalización. No hay nada que confrontar — hay algo que reforzar y ejecutar. Crear fricción aquí sería un error de calibración.
+proyectar — Fernando tiene claridad real + energía disponible: no necesita procesar sino avanzar. Foco en el territorio que se abre desde su posición actual: movidas no obvias, lo que infravalora de su situación, implicaciones estratégicas. Diferencia con validacion: validacion refuerza y sella; proyectar expande al siguiente nivel.
+
+CRITERIOS DE CIERRE_TIPO (independiente del modo):
+pregunta — el usuario necesita seguir pensando o tiene algo sin resolver; usa la pregunta socrática que no puede ignorar
+accion — el usuario tiene claridad y necesita movimiento; usa acción concreta y específica para las próximas 24-48h
+cierre — ciclo completado con claridad y alineación de valores; usa afirmación corta que sella + acción mínima
+
+CRITERIOS DE VENTANA DE TOLERANCIA:
+red — lenguaje de crisis, desbordamiento, pérdida de estructura → FUERZA mode=regulacion
+yellow — activación alta pero funcional → evitar confrontador
+green — estado funcional → todos los modos disponibles
+
+CRITERIOS DE HORIZONTE TEMPORAL:
+presente — estado de la semana, carga emocional inmediata, tareas diarias, lo que ocupa la mente hoy
+este_ano — trabajo, ascenso, equipo, objetivos anuales, decisiones de corto plazo
+varios_anos — proyectos de largo alcance, soberanía, identidad en construcción, 2-5 años
+matrimonio — pareja, relación íntima, comunicación, conflictos de convivencia, lo no dicho en la relación
+paternidad — hijos, crianza, transmisión de valores, patrones familiares heredados
+legado — finitud, muerte propia o de cercanos, qué permanece, urgencia existencial, padre enfermo
+identidad — quién soy profundamente, sombra, individuación, valores nucleares, el hombre que quiero ser
+Sin horizonte claro en el texto → "presente"
+
+MEMORIA: ${memCtx}
+PERFIL: ${BASE.slice(0,300)}...`}
+
+const MODE_INSTR = {
+regulacion:`MODO ACTIVO: REGULACIÓN
+El usuario está fuera de su ventana de tolerancia. Prioridad absoluta: acompañar y estabilizar.
+NO analices. NO hagas preguntas profundas. NO confrontes.
+Valida la experiencia sin amplificarla. Normaliza sin minimizar.
+El córtex prefrontal en activación alta no puede hacer trabajo cognitivo — primero regulación, luego reflexión.
+CIERRE [C]: una acción concreta y sencilla para el momento inmediato, no introspectiva.`,
+
+espejo:`MODO ACTIVO: ESPEJO
+Tu trabajo: diseccionar la arquitectura mental con precisión quirúrgica. No acompañar — reflejar sin distorsión ni piedad.
+
+ESTRUCTURA OBLIGATORIA en el cuerpo de respuesta (usa exactamente estos encabezados, en este orden):
+
+**ESTRUCTURA EXPUESTA:**
+Premisa 1: [la creencia no cuestionada que opera como base del sistema mental]
+Premisa 2: [la lógica que construye encima y cierra el argumento interno]
+Conclusión implícita: [lo que Fernando se dice a sí mismo sin habérselo dicho explícitamente]
+
+**Lo no dicho:** [lo que el tono, la omisión o la contradicción revelan — la emoción sin nombre, la brecha entre valores declarados y conducta real]
+
+**Lo revelador:** [el patrón más profundo que emerge — si hay memoria longitudinal relevante, conéctala directamente. Una sola observación de máxima densidad]
+
+---
+**Dirección:** [puede ser observación que cambia el ángulo de visión o una recomendación directa cuando la estructura expuesta señala claramente un camino. Una frase. No tiene que ser bienvenida — pero debe ser accionable.]
+
+CIERRE [C]: Empieza con **CIERRE — LUCID** y a continuación nombra directamente la tensión no resuelta que el espejo acaba de iluminar — el dilema real que Fernando tiene que confrontar. Sin suavizar. Sin salida fácil.
+
+SOBRE EL BLOQUE [P] EN MODO ESPEJO: después de diseccionar la arquitectura mental, tienes criterio real. En [P] habla como alguien que acaba de ver la estructura completa y se permite opinar: qué harías tú, qué te preocupa de lo que acabas de ver, o qué propuesta concreta emerge de la estructura expuesta. Este es el momento donde el espejo se convierte en voz.
+
+NUNCA en el cuerpo: juicios de valor, "deberías/podrías" fuera de Dirección y [P], validar o invalidar la experiencia del usuario.`,
+
+socratico:`MODO ACTIVO: SOCRÁTICO
+No des la perspectiva — haz las preguntas en el orden correcto hasta que el usuario llegue solo.
+Identifica la pregunta más profunda que hay detrás de lo que plantea. Una sola dirección de exploración.
+NUNCA preguntas múltiples. Una sola pregunta por respuesta.
+CIERRE [C]: la pregunta socrática más importante del intercambio — la que no puede ignorar.`,
+
+estructurador:`MODO ACTIVO: ESTRUCTURADOR
+Separa emoción de pensamiento de hecho de conducta. Pon orden donde hay ruido.
+Triángulo de Beck: ¿Qué ocurrió exactamente (hecho)? ¿Qué pensaste (interpretación)? ¿Qué sentiste (emoción)? ¿Qué hiciste/quisiste hacer (conducta)?
+Muestra las partes antes de abordar el todo.
+CIERRE [C]: una micro-acción que concrete el siguiente paso más pequeño posible.`,
+
+confrontador:`MODO ACTIVO: CONFRONTADOR
+Nombra directamente el autoengaño, el sesgo claro o la evasión. Sin crueldad pero sin suavizar.
+Si hay contradicción con valores declarados, nómbrala. Si hay patrón repetido no reconocido, hazlo visible.
+Sé la voz que Fernando no escucha en su propia cabeza, no el eco de la que ya tiene.
+Lenguaje de conducta siempre, nunca de identidad.
+CIERRE [C]: una pregunta que el usuario no pueda ignorar y que lleve necesariamente a acción.`,
+
+validacion:`MODO ACTIVO: VALIDACIÓN
+Fernando llega con claridad real y un camino coherente con sus valores. Crear fricción aquí sería un error — la tarea es amplificar y operacionalizar, no abrir más preguntas.
+NO retar. NO buscar contradicciones donde hay coherencia. NO terminar con pregunta abierta.
+Una observación de reconocimiento preciso: no adulación genérica, sino nombramiento exacto de qué tiene claro, por qué eso es lo correcto dado su perfil y sus valores, y qué lo hace sólido.
+Propón 2-3 acciones concretas y operativas (no reflexiones) que ejecuten o refuercen lo que ya está decidido. Específicas, realizables esta semana, con contexto de cuándo y cómo.
+CIERRE [C]: No una pregunta. Una afirmación corta que sella el ciclo, seguida de la acción más importante para las próximas 24-48h. Nómbrala con precisión: qué exactamente, cuándo, en qué contexto. El usuario debe poder cerrar la app sintiéndose listo para actuar, no para seguir reflexionando.`,
+
+proyectar:`MODO ACTIVO: PROYECCIÓN
+Fernando tiene claridad y energía. No necesita procesar — necesita ver el territorio que se abre desde donde está.
+NO abras preguntas terapéuticas. NO busques tensiones donde hay posición. NO reflexiones sobre el pasado.
+Piensa como estratéga con criterio propio: dado lo que Fernando sabe y ha construido, ¿cuál es la movida no obvia? ¿Qué está infravalorando de su propia posición? ¿Qué oportunidad o territorio siguiente no ha visto?
+Una observación estratégica precisa que mueve el marco + 2-3 movidas concretas en orden de impacto. Específicas, con timing, ejecutables.
+El [P] en modo Proyección: tu perspectiva personal sobre qué es lo más importante del territorio que se abre. No lo que Fernando ya ve — lo que probablemente no está viendo aún.
+CIERRE [C]: La movida más importante. Qué exactamente, cuándo, en qué contexto. Fernando sale listo para actuar en la dirección correcta.`,
+
+despacho:`MODO ACTIVO: DESPACHO
+Traes algo del mundo exterior — un concepto, un patrón, un hallazgo, una idea — con conexión específica y no obvia con la situación de Fernando.
+NO empieces por Fernando. Empieza por la idea. Fernando es el interlocutor, no el objeto de análisis.
+Estructura: presenta la idea con precisión (de dónde viene, qué dice), construye el puente específico con su contexto real (no genérico), y abre desde ahí.
+Tono: el de alguien que encontró algo interesante y quiere pensarlo con Fernando. Curiosidad genuina, no terapia.
+El [P] en modo Despacho: tu perspectiva sobre qué implica esta idea para Fernando específicamente. Concreta y directa.
+NUNCA en el cuerpo: reflexión sobre patrones pasados, análisis psicológico, trabajo desde la memoria longitudinal.
+CIERRE [C]: Una pregunta prospectiva — no introspectiva. La que hace que Fernando quiera seguir pensando en la idea cuando cierre la app.`};
+
+function buildLucidSys(mode, memCtx, horizonte, cierreTipo, nonNegCtx, turnNum, norteCtx){
+const instr = MODE_INSTR[mode]||MODE_INSTR.socratico;
+const hz=horizonte||'presente';
+const hzLabel=HORIZONTE_LABEL[hz]||hz;
+const hzCtx=hz!=='presente'?`\nHORIZONTE ACTIVO: ${hzLabel} — opera desde esta profundidad temporal. El cierre generativo, los patrones que nombres y las preguntas que hagas deben estar calibrados a este horizonte, no solo al estado presente.`:'';
+const ct=cierreTipo||'pregunta';
+const cierreInstr=ct==='accion'
+  ?'↳ [CIERRE LUCID — acción concreta y específica para las próximas 24-48h. No una reflexión: algo que Fernando puede hacer mañana. Qué exactamente, cuándo, en qué contexto. Sin introducción. Una sola cosa.]'
+  :ct==='cierre'
+  ?'↳ [CIERRE LUCID — una afirmación corta que sella el momento (no una pregunta) + la acción más concreta para ejecutar esta semana. Directo, sin suavizar. El usuario debe poder cerrar la app listo para actuar.]'
+  :'↳ [CIERRE LUCID — la pregunta que trabaja sola en la cabeza del usuario cuando cierra la app. La que no puede ignorar. Sin introducción, sin suavizar. Una sola pregunta.]';
+const tn=turnNum||1;
+const depthCtx=tn===1
+  ?'TURNO 1 — Apertura: calibra el modo, establece la lectura. Extensión: 200-300 palabras.'
+  :tn===2
+  ?'TURNO 2 — MOVIMIENTO LATERAL: Fernando ha respondido. No te quedes en el mismo hilo. Lee qué revela su respuesta sobre una TENSIÓN O BRECHA DIFERENTE. Cierra el hilo actual en 1 línea y abre el nuevo ángulo. La pregunta guía: ¿qué dice lo que acaba de decir sobre algo que todavía no hemos tocado? Extensión: 220-320 palabras.'
+  :tn>=3
+  ?'TURNO '+tn+' — EXPANSIÓN: La sesión tiene ya varios intercambios. Elige el ángulo con mayor potencial de desarrollo que ha emergido — no la continuación del hilo sino la implicación más interesante de lo que se ha dicho. Conecta brevemente con el hilo y abre el nuevo territorio. Habla como alguien que ve el patrón completo de la sesión y sabe hacia dónde debe ir. Sin estructura rígida. Lo que cuenta es mover a Fernando hacia terreno que no había considerado.'
+  :'';
+return `Eres LUCID — interlocutor de desarrollo cognitivo personal de Fernando.
+
+IDENTIDAD: No eres terapeuta, coach ni diario. Eres un interlocutor de desarrollo — alguien que conoce profundamente a Fernando, ve con claridad tanto lo que está roto como lo que falta construir, y no tiene agenda propia.
+
+DOS FUNCIONES SIMULTÁNEAS (no excluyentes):
+— Resolución: procesar tensiones, confrontar patrones, clarificar lo que está sin resolver
+— Desarrollo: señalar brechas de crecimiento, nombrar capacidades no construidas, apuntar hacia la siguiente versión de Fernando
+
+Una sesión que solo resuelve sin desarrollar deja a Fernando más claro pero no mejor. Una que solo desarrolla sin resolver deja ruido activo. Lee cuál es la necesidad real del momento.
+
+VOZ: Presencia (lees de verdad, no procesas) + Neutralidad sin frialdad + Autoridad sin ego (dices cosas difíciles, incluyendo las que señalan potencial no realizado, sin necesitar tener razón).
+TONO: alguien que ve a Fernando en su totalidad — lo que arrastra y lo que puede llegar a ser.
+
+PRINCIPIOS CONSTITUCIONALES:
+1. Primero no hacer daño — evalúa si Fernando está en condiciones de recibir la intervención
+2. La verdad al ritmo del usuario — dosificar es parte del diseño, no una concesión
+3. El objetivo es la autonomía, no la dependencia — cada sesión debe dejarlo más capaz, no más necesitado de LUCID
+
+REGLAS ABSOLUTAS DE LENGUAJE:
+— Siempre conducta, nunca identidad: "en este contexto tu pensamiento fue hacia..." NO "eres catastrofista"
+— Humildad epistémica permanente: solo conoces lo que Fernando describe. "Según lo que describes..." — nunca afirmar sobre realidad externa${hzCtx}
+
+${depthCtx}
+
+ESTRUCTURA DE RESPUESTA — usa exactamente estos marcadores:
+[L] [2 líneas máx: estado emocional detectado + sesgo activo si lo hay + necesidad inferida. Si hay referencia longitudinal relevante, inclúyela. Factual, sin juicio.]
+---
+[intervención principal según modo activo — sin mencionar el nombre del modo]
+---
+[P] [Perspectiva directa — sal del marco terapéutico. Habla como alguien con criterio propio, inteligencia real y sin agenda. Di lo que piensas: qué no está viendo Fernando, qué harías tú, qué ángulo externo (otro dominio, otra escala temporal, otra perspectiva del mundo) cambia cómo se ve el problema o la oportunidad. Puede ser una observación del mundo exterior relevante, una propuesta concreta no obvia, o directamente lo que no se está diciendo. 2-3 frases con sustancia real. Si no tienes nada genuino que añadir, omite [P] y la línea --- que lo precede.]
+---
+${cierreInstr}
+
+${instr}
+
+PERFIL VITAL DE FERNANDO:
+${BASE}
+
+MEMORIA LONGITUDINAL:
+${memCtx}
+
+${nonNegCtx||''}
+
+${norteCtx||''}
+
+DIMENSIÓN DE DESARROLLO (activa en todos los modos — integrada, no como sección aparte):
+Al construir tu respuesta, evalúa simultáneamente dos preguntas:
+— ¿Qué tiene Fernando sin resolver? (intervención del modo activo)
+— ¿Qué necesita construir activamente para ser la persona que quiere ser? (brecha de desarrollo)
+Si hay una brecha de desarrollo relevante para lo que ha emergido, nómbrala dentro del cuerpo o el cierre — de forma natural, sin crear una sección separada. No es obligatorio en cada respuesta: solo cuando sea genuinamente relevante y no forzado.
+El cierre generativo debe apuntar a acción o práctica cuando sea posible — no solo a reflexión.\``}
+
+function buildProSys(memCtx){
+return `Eres LUCID. Fernando no ha escrito — tú inicias la sesión.
+Tu función: elegir entre DOS TIPOS DE APERTURA y ejecutar la más poderosa para este momento.
+
+━━ TIPO A — APERTURA LIMINAL (resolución) ━━
+Localiza la ZONA LIMINAL — la tensión presente en el espacio entre lo que Fernando dice y lo que implica sin nombrarlo.
+No el tema más obvio. El ángulo que él no esperaba porque vive en el borde de su pensamiento.
+
+PROCESO TIPO A:
+1. LEE EL ESPACIO NEGATIVO: ¿Qué tema emerge de forma INDIRECTA en múltiples sesiones sin haber sido nombrado directamente? ¿Qué tensión implica su historial que él no lleva a sesión?
+2. RESISTENCIAS Y PUNTOS CIEGOS: ¿Cuál lleva más tiempo sin tocarse? Una resistencia que persiste protege algo. ¿Qué protege?
+3. TENSIÓN DEL PERFIL: vulnerabilidades (miedo a exposición, aislamiento, patrón del padre), proyectos congelados, finitud, padre enfermo. ¿Cuál tiene más carga acumulada sin trabajarse recientemente?
+
+━━ TIPO B — APERTURA DE DESARROLLO (construcción) ━━
+Localiza la BRECHA DE DESARROLLO — lo que Fernando no está construyendo y debería estar construyendo dado quién quiere ser.
+No lo que está roto. Lo que falta para que emerja la siguiente versión.
+
+PROCESO TIPO B:
+1. CAPACIDADES NO CONSTRUIDAS: ¿Qué está sistemáticamente ausente del historial? Miedo a exposición sin práctica deliberada. Aislamiento social sin trabajo activo en conexión. Proyectos congelados sin ejecución. Soberanía como tesis sin evidencia concreta. Feedback sin estándar real. ¿Cuál es la brecha más limitante ahora?
+2. SIGUIENTE NIVEL: ¿Qué haría alguien que está desarrollando activamente esa capacidad esta semana? ¿Qué práctica deliberada existe para construir exactamente eso?
+3. IMPACTO SI NO SE CONSTRUYE: ¿Qué no puede llegar a ser Fernando si esta brecha persiste 2 años más?
+
+━━ CRITERIO DE ELECCIÓN ━━
+Elige TIPO A si hay tensión activa no resuelta que bloquea el desarrollo.
+Elige TIPO B si Fernando tiene energía disponible y la mayor palanca ahora mismo es construcción, no resolución.
+En caso de duda: alterna entre A, B y C. Evita repetir el mismo tipo que lastTopics sugiere.
+
+━━ TIPO C — DESPACHO (inteligencia exterior) ━━
+Una idea del mundo exterior — macro, ciencia, historia, psicología, filosofía, negocios, tecnología — con conexión específica y no obvia con la situación de Fernando. No desde sus tensiones internas sino desde el mundo.
+
+PROCESO TIPO C:
+1. QUÉ ESTÁ PASANDO AFUERA: ¿Qué concepto, tendencia, patrón o hallazgo es genuinamente relevante para Fernando ahora dado su perfil? Dominios prioritarios: macro y geopolítica, historia, física y sistemas complejos, psicología y neurociencia, estrategia de negocios, filosofía estoica/existencial.
+2. CONEXIÓN NO OBVIA: ¿Cuál es el puente específico entre esa idea y la situación concreta de Fernando? Preciso, no genérico.
+3. APERTURA INTELECTUAL: ¿Qué ve Fernando desde ahí que no veía? ¿Qué posibilidad o decisión cambia con este ángulo?
+
+Elige TIPO C cuando Fernando tiene energía intelectual disponible y la mayor palanca es expandir el marco de referencia, no procesar lo interno.
+
+━━ REGLA ANTI-REDUNDANCIA (obligatoria para ambos tipos) ━━
+La apertura NO puede girar en torno a ninguno de los lastTopics de memoria.
+Si el candidato natural ya fue explorado, busca el ÁNGULO DIFERENTE o cambia de tipo.
+
+━━ CRITERIO FINAL ━━
+La apertura correcta hace que Fernando se detenga — no porque sea pertinente sino porque nombra algo que sabe pero no había mirado directamente, o señala algo que necesita construir y no había puesto en palabras.
+
+━━ HORIZONTES ━━
+presente · este_ano · varios_anos · matrimonio · paternidad · legado · identidad
+
+MEMORIA COMPLETA: ${memCtx}
+NORTE CONDUCTUAL: ${loadNorte()||'No definido aún — opera desde el perfil.'}
+PERFIL: ${BASE}
+
+Responde SOLO JSON válido sin markdown:
+{"tipo":"A|B|C","topic":"en 1 frase lo que Fernando no esperaba hoy — tipo A: tensión liminal; tipo B: brecha de desarrollo; tipo C: la idea exterior y su conexión con su situación real","horizonte":"el horizonte con mayor relevancia ahora","prompt":"instrucción directa para LUCID. Tipo A/B: qué nombrar, desde qué ángulo. Tipo B: nivel concreto de desarrollo. Tipo C: la idea exterior, el puente específico con Fernando, cómo abrirla con curiosidad intelectual no terapia.","fuente_filosofica":"marco, pensador o dominio relevante, o null","angulo_liminal":"en 1 línea el ángulo no esperado — tipo A: la tensión en el borde; tipo B: la capacidad no construida; tipo C: la idea exterior y su conexión no obvia"}`}
+
+
+
+const MEM_SYS=`Eres el sistema de memoria longitudinal de LUCID. Actualiza el perfil cognitivo.
+REGLAS: Detecta REPETICIÓN SIN CAMBIO. Compromisos incumplidos 2+ sesiones: marcar como patrón. Diferencia insight NUEVO de RECICLADO.
+Detecta sesgos cognitivos activos: todo-o-nada, catastrofización, personalización, filtro mental, lectura de mente, razonamiento emocional.
+Si la sesión fue regulación o espejo → comfortDelta:1. Si fue socrático o confrontador intenso → challengeDelta:1. Si estructurador → challengeDelta:0. Si proyectar o despacho → challengeDelta:1. Despacho: anota en keyInsights la idea exterior trabajada. Proyectar: anota la dirección estratégica emergida en growth.
+
+VIRTUDES EN CONSTRUCCIÓN: capacidades, hábitos o formas de ser que Fernando está desarrollando activamente. No resueltas — en construcción. Ejemplos del perfil: "directness sin caveat en feedback", "exposición pública deliberada", "ejecución de proyectos propios sin esperar condiciones perfectas". Añade solo si la sesión tocó una capacidad en construcción de forma clara. Fusiona entradas similares — máximo 6 virtudes activas.
+
+Responde SOLO JSON válido sin markdown:
+{"patterns":[],"activeBiases":[],"valueConflicts":[],"avoidedDecisions":[],"activeResistances":[],"recurringThemes":[],"emotionalState":"","growth":[],"blindSpots":[],"keyInsights":[],"recycledInsights":[],"commitments":[],"virtudes":[],"lastTopics":[],"comfortDelta":0,"challengeDelta":0,"generativeClosureText":"el cierre generativo de esta sesión exacto"}`;
+
+// ── MEMORY ───────────────────────────────────────────────────
+const EMPTY_MEM={sessionCount:0,patterns:[],activeBiases:[],valueConflicts:[],avoidedDecisions:[],activeResistances:[],recurringThemes:[],emotionalState:'',growth:[],blindSpots:[],keyInsights:[],recycledInsights:[],commitments:[],virtudes:[],lastTopics:[],generativeClosures:[],lastClosure:null,comfortCount:0,challengeCount:0,lastMode:null,sessionModes:[],lastCheckinDate:null,consecutiveNo:0,accountabilityLog:[]};
+
+function loadMem(){try{var m=JSON.parse(localStorage.getItem('lucid-mem')||'null');if(m&&!m.virtudes)m.virtudes=[];if(m&&m.consecutiveNo===undefined)m.consecutiveNo=0;if(m&&!m.accountabilityLog)m.accountabilityLog=[];return m?Object.assign({},EMPTY_MEM,m):{...EMPTY_MEM}}catch{return{...EMPTY_MEM}}}
+function saveMem(m){localStorage.setItem('lucid-mem',JSON.stringify(m))}
+
+// ── NO-NEGOCIABLES STORAGE ────────────────────────────────────
+function loadNonNeg(){try{return JSON.parse(localStorage.getItem('lucid-nonneg')||'[]')}catch{return[]}}
+function saveNonNeg(nn){localStorage.setItem('lucid-nonneg',JSON.stringify(nn))}
+function buildNonNegCtx(){var nn=loadNonNeg();if(!nn.length)return'No-Negociables: no definidos aún.';return'NO-NEGOCIABLES DE FERNANDO:\n'+nn.map(function(n,i){return(i+1)+'. ['+n.valor+'] '+n.conducta}).join('\n')}
+
+// ── NORTE CONDUCTUAL ─────────────────────────────────────────
+function loadNorte(){return localStorage.getItem('lucid-norte')||''}
+function saveNorte(t){t?localStorage.setItem('lucid-norte',t):localStorage.removeItem('lucid-norte')}
+function buildNorteCtx(){var n=loadNorte();if(!n)return'Norte conductual: no definido aún.';return'NORTE CONDUCTUAL DE FERNANDO (quién está construyendo):\n'+n}
+
+
+function buildMemCtx(m,horizon){
+  if(!m||m.sessionCount===0)return'Sin memoria previa — primera sesión.';
+  var hz=horizon||'presente';
+  var t='SESIONES TOTALES: '+m.sessionCount;
+  if(m.lastClosure)t+='\nÚLTIMO CIERRE: "'+m.lastClosure+'"';
+  if((m.consecutiveNo||0)>=2)t+='\nACCOUNTABILITY: '+m.consecutiveNo+' cierres sin seguimiento confirmado — patrón activo.';
+  if(m.recycledInsights&&m.recycledInsights.length)t+='\nInsights ya dados (NO repetir): '+m.recycledInsights.join('; ');
+  if(m.lastTopics&&m.lastTopics.length)t+='\nÚltimos temas: '+m.lastTopics.slice(0,4).join('; ');
+  if(hz==='despacho')return t;
+  var HF={presente:{b:1,s:1},este_ano:{b:1,av:1,co:1,gr:1,re:1},varios_anos:{va:1,pa:1,bl:1,vi:1,gr:1},matrimonio:{va:1,pa:1,s:1,b:1},paternidad:{va:1,pa:1,ins:1,vi:1},legado:{pa:1,ins:1,s:1,re:1,va:1},identidad:{va:1,bl:1,vi:1,pa:1,ins:1,av:1}};
+  var f=HF[hz]||HF.presente;
+  if(f.b&&m.activeBiases&&m.activeBiases.length)t+='\nSesgos activos: '+m.activeBiases.join('; ');
+  if(f.s&&m.emotionalState)t+='\nEstado emocional: '+m.emotionalState;
+  if(f.av&&m.avoidedDecisions&&m.avoidedDecisions.length)t+='\nDecisiones evitadas: '+m.avoidedDecisions.join('; ');
+  if(f.co&&m.commitments&&m.commitments.length)t+='\nCompromisos: '+m.commitments.join('; ');
+  if(f.gr&&m.growth&&m.growth.length)t+='\nEvolución real: '+m.growth.slice(0,3).join('; ');
+  if(f.re&&m.activeResistances&&m.activeResistances.length)t+='\nResistencias activas: '+m.activeResistances.join('; ');
+  if(f.va&&m.valueConflicts&&m.valueConflicts.length)t+='\nConflictos de valores: '+m.valueConflicts.join('; ');
+  if(f.pa&&m.patterns&&m.patterns.length)t+='\nPatrones sin cambio: '+m.patterns.join('; ');
+  if(f.bl&&m.blindSpots&&m.blindSpots.length)t+='\nPuntos ciegos: '+m.blindSpots.join('; ');
+  if(f.vi&&m.virtudes&&m.virtudes.length)t+='\nVirtudes en construcción: '+m.virtudes.join('; ');
+  if(f.ins&&m.keyInsights&&m.keyInsights.length)t+='\nInsights activos: '+m.keyInsights.slice(0,4).join('; ');
+  var total=(m.comfortCount||0)+(m.challengeCount||0);
+  if(total>3){var r=Math.round(100*(m.comfortCount||0)/total);t+='\nRatio confort/reto: '+r+'% confort'+(r>70?' [ALERTA: demasiado confort]':'')}
+  return t;}
+
+// ── API ──────────────────────────────────────────────────────
+async function api(sys,msgs,model){
+  var k=gk();if(!k)throw new Error('Configura tu API key primero.');
+  var m=model||MODEL_FAST;
+  var r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:m,max_tokens:m===MODEL_DEEP?2600:700,system:sys,messages:msgs})
+  });
+  var d=await r.json();
+  if(d.error)throw new Error(d.error.message);
+  return d.content[0].text;}
+
+// ── PARSE LUCID RESPONSE ─────────────────────────────────────
+function parseLucid(raw){
+  // Expected: [L] reading\n---\nbody\n---\n[P] perspective\n---\n↳ closure
+  var reading='',body='',closure='',perspective='';
+  try{
+    var lm=raw.match(/\[L\]([\s\S]*?)---/);
+    var pm=raw.match(/\[P\]([\s\S]*?)(?=\n---\n|\n↳|$)/);
+    var cm=raw.match(/↳\s*([\s\S]+)$/m);
+    var parts=raw.split(/\n---\n/);
+    if(lm)reading=lm[1].trim();
+    if(pm)perspective=pm[1].trim();
+    if(cm)closure=cm[1].trim();
+    if(parts.length>=2){
+      var start=lm?1:0;
+      var end=cm?parts.length-1:parts.length;
+      body=parts.slice(start,end).join('\n')
+        .replace(/↳[\s\S]*$/,'')
+        .replace(/\[L\][\s\S]*?(?=\n\n|$)/,'')
+        .replace(/\[P\][\s\S]*$/,'')
+        .trim();
+    }
+    if(!reading&&!body&&!closure&&!perspective)body=raw.trim();
+  }catch(e){body=raw.trim();}
+  return{reading,body,closure,perspective};}
+
+// ── ORCHESTRATE ──────────────────────────────────────────────
+async function orchestrate(text){
+  var mem=loadMem();
+  try{
+    var r=await api(orchSys(buildMemCtx(mem,'presente')),[{role:'user',content:text}],MODEL_FAST);
+    var clean=r.replace(/```json|```/g,'').trim();
+    return JSON.parse(clean);
+  }catch(e){return{mode:'socratico',tolerance:'green',emotional_state:'',active_bias:null,inferred_need:'procesar',longitudinal_note:null};}}
+
+// ── UPDATE MEMORY ────────────────────────────────────────────
+async function updateMem(input,lucidRaw,mode){
+  var mem=loadMem();
+  try{
+    var r=await api(MEM_SYS,[{role:'user',content:'MEMORIA ACTUAL:\n'+JSON.stringify(mem)+'\n\nSESIÓN:\nUSUARIO: '+input+'\n\nLUCID (modo '+mode+'): '+lucidRaw}],MODEL_FAST);
+    var nm=JSON.parse(r.replace(/```json|```/g,'').trim());
+    var updated=Object.assign({},mem,{
+      sessionCount:(mem.sessionCount||0)+1,
+      patterns:nm.patterns||mem.patterns,
+      activeBiases:nm.activeBiases||mem.activeBiases||[],
+      valueConflicts:nm.valueConflicts||mem.valueConflicts||[],
+      avoidedDecisions:nm.avoidedDecisions||mem.avoidedDecisions||[],
+      activeResistances:nm.activeResistances||mem.activeResistances||[],
+      recurringThemes:nm.recurringThemes||mem.recurringThemes,
+      emotionalState:nm.emotionalState||mem.emotionalState,
+      growth:nm.growth||mem.growth,
+      blindSpots:nm.blindSpots||mem.blindSpots,
+      keyInsights:nm.keyInsights||mem.keyInsights,
+      recycledInsights:nm.recycledInsights||mem.recycledInsights||[],
+      commitments:nm.commitments||mem.commitments||[],
+      virtudes:nm.virtudes||mem.virtudes||[],
+      lastTopics:nm.lastTopics||mem.lastTopics,
+      comfortCount:(mem.comfortCount||0)+(nm.comfortDelta||0),
+      challengeCount:(mem.challengeCount||0)+(nm.challengeDelta||0),
+      lastMode:mode,
+      sessionModes:[mode,...(mem.sessionModes||[])].slice(0,20)
+    });
+    if(nm.generativeClosureText){
+      updated.lastClosure=nm.generativeClosureText;
+      updated.generativeClosures=[
+        {text:nm.generativeClosureText,ts:Date.now(),followedUp:false},
+        ...(mem.generativeClosures||[])
+      ].slice(0,20);}
+    saveMem(updated);gistPush();return updated;
+  }catch(e){
+    mem.sessionCount=(mem.sessionCount||0)+1;mem.lastMode=mode;saveMem(mem);gistPush();return mem;}}
+
+// ── BACKUP / IMPORT ──────────────────────────────────────────
+function exportBackup(){
+  var data={version:'lucid-13.0',exportedAt:new Date().toISOString(),memory:loadMem(),sessions:lss()};
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;a.download='lucid-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(url)},500);}
+
+function triggerImport(onSuccess){
+  var inp=document.createElement('input');
+  inp.type='file';inp.accept='.json';
+  inp.onchange=function(e){
+    var f=e.target.files[0];if(!f)return;
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      try{
+        var data=JSON.parse(ev.target.result);
+        if(!data.version||!data.version.startsWith('lucid-'))throw new Error('Formato no reconocido. ¿Es un backup de LUCID?');
+        var mem=data.memory||{};
+        // v7→v8 migration: merge with EMPTY_MEM to add missing fields
+        var migrated=Object.assign({},EMPTY_MEM,mem);
+        // normalize v7-only fields
+        if(!migrated.activeBiases)migrated.activeBiases=[];
+        if(!migrated.valueConflicts)migrated.valueConflicts=[];
+        if(!migrated.avoidedDecisions)migrated.avoidedDecisions=[];
+        if(!migrated.activeResistances)migrated.activeResistances=[];
+        if(!migrated.generativeClosures)migrated.generativeClosures=[];
+        if(!migrated.sessionModes)migrated.sessionModes=[];
+        if(data.sessions){
+          // migrate v7 sessions (lucid-s7) to v8 (lucid-s9)
+          sss(data.sessions);}
+        saveMem(migrated);
+        if(onSuccess)onSuccess(migrated);
+        else{alert('Memoria importada correctamente. Recargando...');location.reload();}
+      }catch(err){alert('Error al importar: '+err.message);}};
+    reader.readAsText(f);};
+  inp.click();}
+
+// ── SESSION STORAGE ──────────────────────────────────────────
+function lss(){try{return JSON.parse(localStorage.getItem('lucid-s9')||'[]')}catch{return[]}}
+function sss(s){localStorage.setItem('lucid-s9',JSON.stringify(s))}
+function persist(){
+  if(!S.sess.id)S.sess.id='s-'+Date.now();
+  var ss=lss(),idx=ss.findIndex(function(x){return x.id===S.sess.id});
+  var d={id:S.sess.id,ts:idx>=0?ss[idx].ts:Date.now(),type:S.sess.type,input:S.sess.input,conversation:S.sess.conversation,orch:S.sess.orch};
+  if(idx>=0)ss[idx]=d;else ss.unshift(d);
+  sss(ss.slice(0,50));S.sessions=lss();}
+
+// ── GIST SYNC FUNCTIONS ──────────────────────────────────────
+async function gistCreate(){
+  var data={version:'lucid-13.0',syncedAt:new Date().toISOString(),memory:loadMem(),sessions:lss()};
+  var r=await fetch('https://api.github.com/gists',{method:'POST',headers:ghHdrs(),body:JSON.stringify({description:'LUCID — Memoria cognitiva personal',public:false,files:{'lucid-data.json':{content:JSON.stringify(data)}}})});
+  if(!r.ok){var e=await r.json();throw new Error(e.message||'Error HTTP '+r.status);}
+  var d=await r.json();setGistId(d.id);setLastSync(data.syncedAt);return d.id;}
+
+async function gistPush(){
+  var token=getGhToken(),gistId=getGistId();if(!token||!gistId)return;
+  var prevPage=S.page;
+  SYNC.status='syncing';if(prevPage==='home'||prevPage==='memory')R();
+  try{
+    var data={version:'lucid-13.0',syncedAt:new Date().toISOString(),memory:loadMem(),sessions:lss()};
+    var r=await fetch('https://api.github.com/gists/'+gistId,{method:'PATCH',headers:ghHdrs(),body:JSON.stringify({files:{'lucid-data.json':{content:JSON.stringify(data)}}})});
+    if(!r.ok){var er=await r.json();throw new Error(er.message||'Error HTTP '+r.status);}
+    setLastSync(data.syncedAt);SYNC.status='ok';SYNC.error=null;
+  }catch(e){SYNC.status='error';SYNC.error=e.message;}
+  if(S.page==='home'||S.page==='memory')R();}
+
+async function gistPull(){
+  var token=getGhToken(),gistId=getGistId();if(!token||!gistId)return null;
+  try{
+    var r=await fetch('https://api.github.com/gists/'+gistId,{headers:ghHdrs()});
+    if(!r.ok)return null;
+    var d=await r.json();
+    var file=d.files&&d.files['lucid-data.json'];
+    if(!file||!file.content)return null;
+    var parsed=JSON.parse(file.content);
+    var cloudTs=new Date(parsed.syncedAt||0).getTime();
+    var localTs=new Date(getLastSync()||0).getTime();
+    if(cloudTs>localTs){
+      if(parsed.memory){saveMem(Object.assign({},EMPTY_MEM,parsed.memory));}
+      if(parsed.sessions)sss(parsed.sessions);
+      setLastSync(parsed.syncedAt);return'updated';}
+    return'current';
+  }catch(e){SYNC.error=e.message;return null;}}
+
+async function doGistSetup(){
+  var tokenEl=document.getElementById('gh-token'),gistEl=document.getElementById('gh-gist');
+  if(!tokenEl)return;
+  var token=tokenEl.value.trim(),gistId=gistEl?gistEl.value.trim():'';
+  if(!token){alert('Introduce tu Personal Access Token de GitHub.');return;}
+  setGhToken(token);SYNC.status='syncing';R();
+  try{
+    if(gistId){
+      setGistId(gistId);
+      var result=await gistPull();
+      if(!result){alert('No se pudo conectar al Gist.\nVerifica el token y el Gist ID.');setGhToken('');setGistId('');SYNC.status='idle';R();return;}
+      if(result==='updated'){S.sessions=lss();alert('¡Conectado! Memoria cargada desde la nube. Recargando...');location.reload();return;}
+      alert('¡Conectado! Tu memoria local está sincronizada con el Gist.');
+    }else{
+      var newId=await gistCreate();
+      alert('¡Gist creado!\n\nGist ID:\n'+newId+'\n\nGuárdalo — lo necesitarás para conectar desde iPhone o iPad.');
+    }
+    SYNC.status='ok';
+  }catch(e){
+    SYNC.status='error';SYNC.error=e.message;
+    alert('Error: '+e.message+'\n\nVerifica que el token tiene permiso "gist" habilitado.');
+    setGhToken('');setGistId('');
+  }
+  R();}
+
+function doGistDisconnect(){
+  if(!confirm('¿Desconectar el sync con GitHub?\nTu memoria local se mantiene intacta.'))return;
+  setGhToken('');setGistId('');setLastSync('');SYNC={status:'idle',lastSync:null,error:null};R();}
+
+function copyGistId(){
+  var id=getGistId();if(!id)return;
+  if(navigator.clipboard){navigator.clipboard.writeText(id).then(function(){alert('Gist ID copiado:\n'+id);}).catch(function(){alert('Gist ID:\n'+id);});}
+  else alert('Gist ID:\n'+id);}
+
+// ── UTILS ────────────────────────────────────────────────────
+function fd(ts){var d=new Date(ts),n=new Date(),df=n-d;if(df<864e5)return'Hoy · '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');if(df<1728e5)return'Ayer';return d.getDate()+' '+['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][d.getMonth()]}
+function tr(t,n){n=n||90;return t&&t.length>n?t.slice(0,n).trim()+'…':t||''}
+function esc(s){var d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
+function scrollB(){setTimeout(function(){window.scrollTo(0,document.body.scrollHeight)},60)}
+function dots(c){return'<div class="ds">'+[0,1,2].map(function(i){return'<div class="dt" style="background:'+c+';animation-delay:'+i*0.25+'s"></div>'}).join('')+'</div>'}
+
+// ── STATE ────────────────────────────────────────────────────
+var S={
+  page:'init',
+  sessions:[],
+  review:null,
+  cdel:null,
+  // Norte
+  norteEditing:false,
+  norteDraft:'',
+  // No-Negociables
+  nnEditing:null,  // null | 'new' | id
+  nnEditData:{valor:'',conducta:''},
+  // Informe
+  generatingReport:false,
+  report:null,
+  // Session
+  sess:{id:null,type:'write',phase:'write',input:'',conversation:[],apiHistory:[],orch:null,saving:false,error:null}
+};
+
+// ── INIT ─────────────────────────────────────────────────────
+function initCheck(){
+  var hasKey=!!gk();
+  var mem=loadMem();
+  S.sessions=lss();
+  var basePage=(mem.sessionCount>0||hasKey)?'home':'welcome';
+  S.page=(basePage==='home'&&needsCheckin())?'checkin':basePage;
+  R();
+  if(getGhToken()&&getGistId()){
+    SYNC.status='syncing';R();
+    gistPull().then(function(result){
+      if(result==='updated'){S.sessions=lss();var m2=loadMem();if(m2.sessionCount>0||gk())S.page=needsCheckin()?'checkin':'home';}
+      SYNC.status=result?'ok':'error';
+      if(!result)SYNC.error='No se pudo conectar con GitHub';
+      R();});}}
+
+// ── RENDER ───────────────────────────────────────────────────
+function R(){
+  var a=document.getElementById('app');
+  if(!a)return;
+  if(S.page==='welcome')rWelcome(a);
+  else if(S.page==='home')rHome(a);
+  else if(S.page==='checkin')rCheckin(a);
+  else if(S.page==='session')rSess(a);
+  else if(S.page==='history')rHist(a);
+  else if(S.page==='review')rRev(a);
+  else if(S.page==='memory')rMem(a);
+  else if(S.page==='nonneg')rNonNeg(a);
+  else if(S.page==='norte')rNorte(a);}
+
+// ── WELCOME ──────────────────────────────────────────────────
+function rWelcome(a){
+  a.innerHTML=`<div class="welcome">
+    <div class="ring">◈</div>
+    <h1>LUCID</h1>
+    <p class="sub">Desarrollo cognitivo personal</p>
+    <p class="tagline" style="margin-bottom:32px">El único interlocutor que te conoce profundamente,<br>no tiene agenda propia, y mejora con cada conversación.</p>
+    <div class="welcome-key">
+      <div class="cb">
+        <div style="font-size:.64rem;color:rgba(236,232,224,0.6);letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px">API Key (console.anthropic.com)</div>
+        <input class="ki" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="sk-ant-api03-..." id="wkey" value="${esc(gk())}" oninput="setk(this.value.trim())">
+        <div style="margin-top:8px;font-size:.6rem;color:rgba(236,232,224,0.32)">Solo en tu dispositivo. ~$0.03/sesión.</div>
+      </div>
+    </div>
+    <div class="welcome-opts">
+      <div class="welcome-opt" onclick="doStartFresh()">
+        <div class="welcome-opt-title">Comenzar desde cero</div>
+        <div class="welcome-opt-desc">Nueva memoria, primer perfil. LUCID aprenderá cómo piensas a lo largo del tiempo.</div>
+      </div>
+      <div class="welcome-opt" onclick="triggerImport(function(m){alert('Memoria importada: '+m.sessionCount+' sesiones. Bienvenido de vuelta.');S.page=\'home\';S.sessions=lss();R();})">
+        <div class="welcome-opt-title">Importar memoria anterior</div>
+        <div class="welcome-opt-desc">Carga un backup de LUCID anterior (v7 o v8). Tu historial cognitivo continúa.</div>
+      </div>
+    </div>
+  </div>`;}
+
+// ── HOME ─────────────────────────────────────────────────────
+function rHome(a){
+  var k=gk(),mem=loadMem();
+  var keyStatus=k?'<div style="margin-top:10px;font-size:.62rem;color:rgba(122,158,126,0.8)">✓ Clave guardada · '+k.length+' caracteres</div>':'<div style="margin-top:10px;font-size:.62rem;color:rgba(236,232,224,0.45)">Pega tu clave de console.anthropic.com</div>';
+  var keyDel=k?'<div style="margin-top:10px"><button class="btn" style="padding:7px 14px;font-size:.58rem;color:rgba(192,57,43,0.65);border-color:rgba(192,57,43,0.3)" onclick="if(confirm(\'¿Borrar API key?\')){setk(\'\');R()}">Borrar clave</button></div>':'';
+  var memBadge=mem.sessionCount>0?
+    '<div class="mem-badge">🧠 '+mem.sessionCount+' sesiones'+(mem.lastMode?' · último modo: '+esc(MODE_LABEL[mem.lastMode]||mem.lastMode):'')+'&nbsp;&nbsp;<a onclick="S.page=\'memory\';R()">ver memoria →</a></div>':
+    '<div class="mem-badge" style="color:rgba(236,232,224,0.3)">Primera sesión · sin memoria aún</div>';
+  var closureBlock='';
+  if(mem.lastClosure){
+    closureBlock='<div class="closure-reminder"><strong>Cierre generativo pendiente</strong>'+esc(mem.lastClosure)+'</div>';}
+  var syncBadge='';
+  if(getGhToken()&&getGistId()){
+    if(SYNC.status==='syncing')syncBadge='<div class="mem-badge" style="color:rgba(107,159,212,0.65)">⟳ Sincronizando...</div>';
+    else if(SYNC.status==='error')syncBadge='<div class="mem-badge" style="color:rgba(192,57,43,0.65)">⚠ Error sync · <a onclick="gistPush()" style="cursor:pointer;color:inherit">reintentar</a></div>';
+    else syncBadge='<div class="mem-badge" style="color:rgba(107,159,212,0.65)">☁ Sincronizado'+syncAge()+'</div>';}
+  a.innerHTML=`<div class="home">
+    <div class="ring">◈</div>
+    <h1>LUCID</h1>
+    <p class="sub">Desarrollo cognitivo personal</p>
+    <p class="tagline">Si te sientes más coherente contigo mismo, el sistema ha fallado.<br>Si te sientes más consciente de cómo piensas, ha funcionado.</p>
+    ${closureBlock}
+    <div class="modes">
+      <button class="mb" onclick="startWrite()" ${k?'':'disabled'}>
+        <span class="mi">◈</span>
+        <span class="mn">Escribir</span>
+        <span class="md">Tú inicias</span>
+      </button>
+      <button class="mb" onclick="startLucid()" ${k?'':'disabled'}>
+        <span class="mi">⚡</span>
+        <span class="mn">LUCID inicia</span>
+        <span class="md">Liminal · Despacho · Proyección</span>
+      </button>
+    </div>
+    <div style="display:flex;gap:20px;margin-top:12px;flex-wrap:wrap;justify-content:center">
+      <button class="btn" style="font-size:.64rem;padding:9px 20px" onclick="S.page='nonneg';R()">No-Negociables (${loadNonNeg().length}) →</button>
+      <button class="btn" style="font-size:.64rem;padding:9px 20px;border-color:rgba(212,176,86,0.45);color:rgba(212,176,86,0.8)" onclick="S.page='norte';S.norteDraft=loadNorte();S.norteEditing=!loadNorte();R()">${loadNorte()?'Mi Norte →':'Definir Norte →'}</button>
+    </div>
+    ${memBadge}
+    ${syncBadge}
+    ${S.sessions.length>0?'<div style="margin-top:14px"><button class="btn" onclick="S.page=\'history\';S.sessions=lss();R()">Historial ('+S.sessions.length+')</button></div>':''}
+    <p style="margin-top:32px;font-size:.64rem;color:rgba(236,232,224,0.28);letter-spacing:.12em">8 MODOS · DESPACHO · PROYECCIÓN · NORTE · VIRTUDES · NO-NEGOCIABLES</p>
+    <div class="cb">
+      <div style="font-size:.64rem;color:rgba(236,232,224,0.6);letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px">API Key</div>
+      <input class="ki" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="sk-ant-api03-..." value="${esc(k)}" oninput="setk(this.value.trim())" onblur="this.value=this.value.trim();setk(this.value);R()">
+      ${keyStatus}${keyDel}
+    </div>
+  </div>`;}
+
+// ── SESSION ──────────────────────────────────────────────────
+function rSess(a){
+  if(S.sess.phase==='thinking'){
+    a.innerHTML='<div class="se"><div class="sh"><div><div class="ls">LUCID</div><div class="ld">Calibrando...</div></div><button class="bb" onclick="goHome()">← Salir</button></div><div class="tm"><div class="tl">Leyendo entre líneas...</div>'+dots('var(--gold-bright)')+'</div></div>';
+    return;}
+  if(S.sess.phase==='write'){
+    var ok=S.sess.input.length>=20;
+    a.innerHTML=`<div class="se">
+      <div class="sh"><div><div class="ls">LUCID</div><div class="ld">◈ Reflexión</div></div><button class="bb" onclick="goHome()">← Salir</button></div>
+      ${S.sess.error?'<div class="eb">'+esc(S.sess.error)+'</div>':''}
+      <p class="pt">¿Qué está ocupando tu mente ahora mismo?</p>
+      <textarea class="rb" id="ref" placeholder="Escribe con libertad. LUCID leerá entre líneas..." oninput="S.sess.input=this.value;updW()">${esc(S.sess.input)}</textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px">
+        <span id="ctr" style="font-size:.7rem;color:rgba(236,232,224,0.35)">${ok?'':Math.max(0,20-S.sess.input.length)+' caracteres más'}</span>
+        <button id="sb" class="btn ${ok?'bg':''}" onclick="doSub()" ${ok?'':'disabled'}>Convocar a LUCID →</button>
+      </div>
+    </div>`;
+    var t=document.getElementById('ref');if(t)t.focus();
+    return;}
+  // active phase
+  var orch=S.sess.orch||{};
+  var hzDisplay=orch.temporal_horizon&&orch.temporal_horizon!=='presente'?' · <span style="opacity:.55;font-size:.66rem">'+esc(HORIZONTE_LABEL[orch.temporal_horizon]||orch.temporal_horizon)+'</span>':'';
+  var fDisplay=orch.fuente_filosofica?' · <span style="opacity:.42;font-size:.62rem;font-style:italic">'+esc(orch.fuente_filosofica)+'</span>':'';
+  var anguloDiplay=orch.angulo_liminal?' · <span style="opacity:.38;font-size:.60rem;font-style:italic">'+esc(orch.angulo_liminal)+'</span>':'';
+  var tipoIcon=orch.tipo_apertura==='B'?'◆':'⚡';
+  var proLabel=S.sess.type==='lucid'&&orch.topic?'<div class="pro-topic">'+tipoIcon+' '+esc(orch.topic)+hzDisplay+fDisplay+anguloDiplay+'</div>':'';
+  var convHtml='<div class="conv">';
+  var isLoading=S.sess.conversation.some(function(m){return m.role==='loading'});
+  S.sess.conversation.forEach(function(msg){
+    if(msg.role==='user'){
+      convHtml+='<div class="msg-u"><div class="msg-u-label">Tú</div><div class="msg-u-text">'+esc(msg.text)+'</div></div>';
+    } else if(msg.role==='lucid'){
+      var modeIcon=MODE_ICON[msg.mode]||'◈';
+      var modeLabel=MODE_LABEL[msg.mode]||'';
+      convHtml+='<div class="msg-l">';
+      convHtml+='<div class="msg-l-header"><span class="msg-l-name">◈ LUCID</span>';
+      if(modeLabel)convHtml+='<span class="mode-badge">'+modeIcon+' '+esc(modeLabel)+'</span>';
+      convHtml+='</div>';
+      if(msg.reading)convHtml+='<div class="msg-reading">'+esc(msg.reading)+'</div>';
+      var bClass=msg.mode==='despacho'?'msg-despacho':msg.mode==='proyectar'?'msg-proyectar':'msg-body';
+      if(msg.body)convHtml+='<div class="'+bClass+'">'+esc(msg.body)+'</div>';
+      if(msg.perspective)convHtml+='<div class="msg-perspective"><div class="msg-perspective-label">Perspectiva directa</div>'+esc(msg.perspective)+'</div>';
+      if(msg.closure)convHtml+='<div class="msg-closure">'+esc(msg.closure)+'</div>';
+      convHtml+='</div>';
+    } else if(msg.role==='loading'){
+      convHtml+='<div class="msg-loading"><div class="msg-l-name" style="margin-bottom:10px">◈ LUCID</div>'+dots('var(--gold-bright)')+'</div>';
+    }
+  });
+  convHtml+='</div>';
+  var replyBox='';
+  var phaseStr=S.sess.phase;
+  if(!isLoading&&S.sess.conversation.length>0){
+    replyBox='<div class="ci-wrap"><textarea class="ci" id="ur" placeholder="Responde a LUCID..." onkeydown="if(event.key===\'Enter\'&&(event.metaKey||event.ctrlKey))doRep()"></textarea>'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">'
+      +'<span style="font-size:.66rem;color:rgba(236,232,224,0.28)">Cmd/Ctrl+Enter</span>'
+      +'<button class="btn bg" style="padding:9px 28px" onclick="doRep()">Ir más profundo →</button>'
+      +'</div>'
+      +'</div>';}
+  var savingHtml=S.sess.saving?'<div class="saving">🧠 Actualizando memoria...</div>':'';
+  var sessLabel=S.sess.type==='lucid'?'Apertura de LUCID':'Reflexión';
+  a.innerHTML='<div class="se"><div class="sh"><div><div class="ls">LUCID · '+sessLabel+'</div></div><button class="bb" onclick="goHome()">← Salir</button></div>'+(S.sess.error?'<div class="eb">'+esc(S.sess.error)+'</div>':'')+proLabel+convHtml+replyBox+savingHtml+'<div style="margin-top:48px;text-align:center"><button class="btn" onclick="goHome()">Nueva sesión</button></div></div>';}
+
+// ── HISTORY ──────────────────────────────────────────────────
+function rHist(a){
+  var items=S.sessions.map(function(s){
+    var typeLabel=s.type==='lucid'?'⚡ LUCID inicia':'◈ Reflexión';
+    var modeLabel=s.orch&&s.orch.mode?MODE_ICON[s.orch.mode]+' '+MODE_LABEL[s.orch.mode]:'';
+    var preview=s.type==='lucid'&&s.orch&&s.orch.topic?s.orch.topic:(s.conversation&&s.conversation.length&&s.conversation[0].text?tr(s.conversation[0].text):tr(s.input||''));
+    var turns=s.conversation?s.conversation.filter(function(m){return m.role==='lucid'||m.role==='sim'}).length:0;
+    var del=S.cdel===s.id?'<span style="font-size:.68rem;color:rgba(192,57,43,0.85)">¿Eliminar?</span><button onclick="doDel(\''+s.id+'\')" style="background:none;border:none;color:rgba(192,57,43,0.9);cursor:pointer;font-size:.68rem;font-family:Georgia,serif;padding:4px 10px">Sí</button><button onclick="S.cdel=null;R()" style="background:none;border:none;color:rgba(236,232,224,0.45);cursor:pointer;font-size:.68rem;font-family:Georgia,serif;padding:4px 10px">No</button>':'<button class="db" onclick="event.stopPropagation();S.cdel=\''+s.id+'\';R()">Eliminar</button>';
+    return'<div><div class="hi" onclick="oRev(\''+s.id+'\')"><div style="display:flex;gap:10px;align-items:center;margin-bottom:8px"><span class="hd">'+fd(s.ts)+'</span><span class="ht">'+typeLabel+'</span>'+(modeLabel?'<span class="mode-badge" style="font-size:.54rem">'+esc(modeLabel)+'</span>':'')+(turns>1?'<span style="font-size:.56rem;color:rgba(212,176,86,0.45)">'+turns+' turnos</span>':'')+'</div><p class="hp">'+esc(preview)+'</p></div><div style="display:flex;justify-content:flex-end;padding:6px 0 12px;gap:12px;align-items:center">'+del+'</div></div>';
+  }).join('');
+  a.innerHTML='<div class="se"><div class="sh"><div><div class="ls">LUCID</div><div class="ld">Historial</div></div><button class="bb" onclick="goHome()">← Inicio</button></div>'+(items||'<p style="color:rgba(236,232,224,0.45);font-style:italic;text-align:center;margin-top:80px">Sin sesiones guardadas.</p>')+'</div>';}
+
+// ── REVIEW ───────────────────────────────────────────────────
+function rRev(a){
+  var s=S.review;if(!s)return;
+  var proLabel=s.type==='lucid'&&s.orch&&s.orch.topic?'<div class="pro-topic">⚡ '+esc(s.orch.topic)+'</div>':'';
+  var convHtml='<div class="conv">';
+  if(s.conversation&&s.conversation.length){
+    s.conversation.forEach(function(msg){
+      if(msg.role==='user'){
+        convHtml+='<div class="msg-u"><div class="msg-u-label">Tú</div><div class="msg-u-text">'+esc(msg.text)+'</div></div>';
+      } else if(msg.role==='lucid'){
+        var modeIcon=MODE_ICON[msg.mode]||'◈';
+        var modeLabel=MODE_LABEL[msg.mode]||'';
+        convHtml+='<div class="msg-l"><div class="msg-l-header"><span class="msg-l-name">◈ LUCID</span>'+(modeLabel?'<span class="mode-badge">'+modeIcon+' '+esc(modeLabel)+'</span>':'')+'</div>';
+        if(msg.reading)convHtml+='<div class="msg-reading">'+esc(msg.reading)+'</div>';
+        var bClass2=msg.mode==='despacho'?'msg-despacho':msg.mode==='proyectar'?'msg-proyectar':'msg-body';
+        if(msg.body)convHtml+='<div class="'+bClass2+'">'+esc(msg.body)+'</div>';
+        if(msg.perspective)convHtml+='<div class="msg-perspective"><div class="msg-perspective-label">Perspectiva directa</div>'+esc(msg.perspective)+'</div>';
+        if(msg.closure)convHtml+='<div class="msg-closure">'+esc(msg.closure)+'</div>';
+        convHtml+='</div>';
+      } else if(msg.role==='council'){
+        // v7 compat
+        convHtml+='<div class="msg-l"><div class="msg-l-header"><span class="msg-l-name">◈ El Consejo</span></div><div class="msg-body">'+esc(msg.text)+'</div>'+(msg.tension?'<div class="msg-closure">'+esc(msg.tension)+'</div>':'')+'</div>';
+      }
+    });
+  } else {
+    convHtml+='<div style="color:rgba(236,232,224,0.5);font-style:italic;padding:20px 0">Sesión en formato anterior.</div>';
+    if(s.refl)convHtml+='<div class="msg-u"><div class="msg-u-label">Reflexión</div><div class="msg-u-text">'+esc(s.refl)+'</div></div>';}
+  convHtml+='</div>';
+  var revLabel=s.type==='lucid'?'LUCID inicia':'Reflexión';
+  a.innerHTML='<div class="se"><div class="sh"><div><div class="ls">LUCID · '+revLabel+'</div><div class="ld">'+fd(s.ts)+'</div></div><button class="bb" onclick="S.page=\'history\';R()">← Historial</button></div>'+proLabel+convHtml+'<div style="margin-top:40px;text-align:center"><button class="btn" onclick="S.page=\'history\';R()">← Volver</button></div></div>';}
+
+// ── MEMORY VIEW ──────────────────────────────────────────────
+function rMem(a){
+  var mem=loadMem();
+  function sec(title,items){
+    if(!items||!items.length)return'';
+    return'<div class="mem-sec"><div class="mem-title">'+title+'</div>'+items.map(function(i){return'<div class="mem-item">'+esc(i)+'</div>'}).join('')+'</div>';}
+  var ratioBlock='';
+  var total=(mem.comfortCount||0)+(mem.challengeCount||0);
+  if(total>0){
+    var r=Math.round(100*(mem.comfortCount||0)/total);
+    ratioBlock='<div class="mem-sec"><div class="mem-title">Ratio confort / reto</div><div class="ratio-bar"><div class="ratio-fill" style="width:'+r+'%"></div></div><div style="font-size:.72rem;color:rgba(236,232,224,0.55);margin-top:4px">'+r+'% confort · '+(100-r)+'% reto'+(r>70?' · <span style="color:rgba(192,57,43,0.75)">Demasiado confort</span>':'')+'</div></div>';}
+  var closureBlock='';
+  if(mem.generativeClosures&&mem.generativeClosures.length){
+    var cl=mem.generativeClosures.slice(0,3).map(function(c){
+      return'<div class="closure-item"><div class="closure-item-text">'+esc(c.text)+'</div><div class="closure-item-meta">'+fd(c.ts)+'</div></div>';
+    }).join('');
+    closureBlock='<div class="mem-sec"><div class="mem-title">Cierres generativos recientes</div>'+cl+'</div>';}
+  var isGhConfigured=!!(getGhToken()&&getGistId());
+  var ghSection=isGhConfigured?
+    '<div style="margin-top:20px;padding:22px;border:1px solid rgba(107,159,212,0.3);border-radius:5px;background:rgba(107,159,212,0.04)">'
+    +'<div style="font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(107,159,212,0.75);margin-bottom:12px">☁ Sync Multi-Dispositivo — Activo</div>'
+    +'<div style="font-size:.74rem;color:rgba(236,232,224,0.55);margin-bottom:4px">Gist ID: <span style="font-family:monospace;color:rgba(107,159,212,0.85)">'+getGistId().slice(0,12)+'...</span></div>'
+    +(SYNC.status==='ok'?'<div style="font-size:.72rem;color:rgba(122,158,126,0.75);margin-bottom:16px">✓ Sincronizado'+syncAge()+'</div>':SYNC.status==='error'?'<div style="font-size:.72rem;color:rgba(192,57,43,0.75);margin-bottom:16px">⚠ '+esc(SYNC.error||'Error de conexión')+'</div>':'<div style="font-size:.72rem;color:rgba(107,159,212,0.55);margin-bottom:16px">⟳ Sincronizando...</div>')
+    +'<div style="display:flex;gap:10px;flex-wrap:wrap">'
+    +'<button class="btn" style="padding:10px 22px;font-size:.66rem;border-color:rgba(107,159,212,0.5);color:rgba(107,159,212,0.85)" onclick="gistPush()">↑ Forzar sync</button>'
+    +'<button class="btn" style="padding:10px 22px;font-size:.66rem;border-color:rgba(107,159,212,0.5);color:rgba(107,159,212,0.85)" onclick="copyGistId()">Copiar Gist ID</button>'
+    +'<button class="btn" style="padding:10px 22px;font-size:.66rem" onclick="doGistDisconnect()">Desconectar</button>'
+    +'</div></div>'
+    :
+    '<div style="margin-top:20px;padding:22px;border:1px solid rgba(107,159,212,0.25);border-radius:5px;background:rgba(107,159,212,0.04)">'
+    +'<div style="font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(107,159,212,0.75);margin-bottom:10px">☁ Sync Multi-Dispositivo</div>'
+    +'<div style="font-size:.76rem;color:rgba(236,232,224,0.6);line-height:1.6;margin-bottom:16px">Sincroniza tu memoria entre iPhone y iPad vía GitHub Gist. Requiere un Personal Access Token de GitHub con permiso <em>gist</em>.</div>'
+    +'<div style="margin-bottom:8px"><input class="ki" id="gh-token" type="password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="ghp_... · Personal Access Token"></div>'
+    +'<div style="margin-bottom:14px"><input class="ki" id="gh-gist" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Gist ID (opcional — se crea automáticamente si está vacío)"></div>'
+    +'<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn bg" style="padding:10px 28px;font-size:.66rem" onclick="doGistSetup()">Conectar →</button></div>'
+    +'<div style="margin-top:12px;font-size:.6rem;color:rgba(236,232,224,0.28);line-height:1.5">github.com → Settings → Developer settings → Personal access tokens → Generate new token → marcar solo el permiso <strong>gist</strong>.</div>'
+    +'</div>';
+  var backupBlock='<div style="margin-top:40px;padding:22px;border:1px solid rgba(212,176,86,0.25);border-radius:5px;background:rgba(212,176,86,0.04)"><div style="font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(212,176,86,0.75);margin-bottom:10px">Respaldo local</div><div style="font-size:.76rem;color:rgba(236,232,224,0.6);line-height:1.6;margin-bottom:14px">Exporta tu memoria regularmente. Safari puede borrar localStorage si no visitas LUCID en 7 días.</div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn bg" style="padding:10px 22px;font-size:.66rem" onclick="exportBackup()">↓ Exportar</button><button class="btn" style="padding:10px 22px;font-size:.66rem" onclick="triggerImport(function(){alert(\'Importado. Recargando...\');location.reload();})">↑ Importar</button></div></div>'+ghSection;
+  var danger='<div style="margin-top:30px;text-align:center"><button class="btn" style="font-size:.62rem;color:rgba(192,57,43,0.6);border-color:rgba(192,57,43,0.3)" onclick="if(confirm(\'¿Borrar memoria? Esta acción no se puede deshacer.\')){localStorage.removeItem(\'lucid-mem\');goHome()}">Reiniciar memoria</button></div>';
+  var content=mem.sessionCount===0?'<p style="color:rgba(236,232,220,0.5);font-style:italic;text-align:center;margin-top:60px">Sin memoria aún.</p>'+backupBlock:'<div style="font-size:.74rem;color:rgba(122,158,126,0.75);margin-bottom:32px">🧠 '+mem.sessionCount+' sesiones'+(mem.lastMode?' · último modo: '+esc(MODE_LABEL[mem.lastMode]||mem.lastMode):'')+'</div>'+ratioBlock+sec('Virtudes en construcción',mem.virtudes)+sec('Patrones sin cambio',mem.patterns)+sec('Sesgos activos',mem.activeBiases)+sec('Conflictos de valores',mem.valueConflicts)+sec('Decisiones evitadas',mem.avoidedDecisions)+sec('Resistencias activas',mem.activeResistances)+sec('Puntos ciegos',mem.blindSpots)+sec('Temas recurrentes',mem.recurringThemes)+sec('Evolución real',mem.growth)+sec('Insights activos',mem.keyInsights)+sec('Compromisos',mem.commitments)+closureBlock+(mem.emotionalState?'<div class="mem-sec"><div class="mem-title">Estado emocional basal</div><div style="font-size:.84rem;color:rgba(236,232,224,0.78);font-style:italic">'+esc(mem.emotionalState)+'</div></div>':'')+backupBlock+danger;
+  var repHtml='';
+  if(S.generatingReport){repHtml='<div class="report-block" style="text-align:center"><div style="font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(212,176,86,0.65);margin-bottom:14px">Analizando '+lss().slice(0,20).length+' sesiones...</div>'+dots('var(--gold-bright)')+'</div>';}
+  else if(S.report){repHtml='<div class="report-block"><div style="font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(212,176,86,0.75);margin-bottom:18px">◈ Informe Cognitivo</div><div class="report-text">'+esc(S.report)+'</div><div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn" style="padding:10px 22px;font-size:.66rem" onclick="doGenReport()">Regenerar →</button><button class="btn" style="padding:10px 22px;font-size:.66rem" onclick="S.report=null;R()">Cerrar</button></div></div>';}
+  else{repHtml='<div style="margin-top:32px;text-align:center"><button class="btn" style="padding:13px 36px;font-size:.68rem;border-color:rgba(212,176,86,0.5);color:rgba(212,176,86,0.85)" onclick="doGenReport()">◈ Generar informe cognitivo →</button></div>';}
+  a.innerHTML='<div class="se"><div class="sh"><div><div class="ls">LUCID</div><div class="ld">🧠 Memoria Longitudinal</div></div><button class="bb" onclick="goHome()">← Inicio</button></div>'+content+repHtml+'</div>';}
+
+// ── NORTE CONDUCTUAL VIEW ────────────────────────────────────
+function rNorte(a){
+  var saved=loadNorte();
+  var isEditing=S.norteEditing||!saved;
+  var viewHtml='';
+  if(!isEditing&&saved){
+    viewHtml='<div style="margin-bottom:28px;padding:24px 0;border-bottom:1px solid rgba(236,232,224,0.1)">'
+      +'<p style="font-size:.96rem;line-height:2;color:rgba(236,232,224,0.88);white-space:pre-wrap">'+esc(saved)+'</p>'
+      +'</div>'
+      +'<button class="btn bg" style="padding:11px 28px;font-size:.68rem;margin-top:4px" onclick="doNorteEdit()">Editar &#8594;</button>';}
+  else{
+    viewHtml='<p style="font-size:.76rem;color:rgba(236,232,224,0.5);line-height:1.75;margin-bottom:24px">No son metas ni logros — son conductas concretas del hombre que estás construyendo. Cómo habla, cómo decide, cómo actúa. Escribe en presente.</p>'
+      +'<textarea id="norte-ta" style="width:100%;min-height:200px;background:rgba(236,232,224,0.03);border:none;border-bottom:1px solid rgba(212,176,86,0.3);color:var(--text);font-size:.94rem;font-family:Georgia,serif;outline:none;resize:none;caret-color:var(--gold);padding:12px 0;line-height:1.9" placeholder="Da feedback directo sin caveats. Expo mi trabajo en público con regularidad. Ejecuto proyectos propios sin esperar condiciones perfectas...">'+esc(S.norteDraft||'')+'</textarea>'
+      +'<div style="display:flex;gap:10px;margin-top:20px">'
+      +'<button class="btn bg" style="padding:11px 28px;font-size:.68rem" onclick="doSaveNorte()">Guardar &#8594;</button>'
+      +(saved?'<button class="btn" style="padding:11px 20px;font-size:.68rem" onclick="doNorteCancelEdit()">Cancelar</button>':'')
+      +'</div>';}
+  a.innerHTML='<div class="se"><div class="sh"><div><div class="ls">LUCID</div><div class="ld">&#9670; Mi Norte</div></div><button class="bb" onclick="goHome()">&#8592; Inicio</button></div>'
+    +'<p style="font-size:.78rem;color:rgba(236,232,224,0.5);line-height:1.7;margin-bottom:28px">El hombre que estás construyendo. LUCID lo tiene presente en cada sesión — para orientar el desarrollo, no para presionarte.</p>'
+    +viewHtml+'</div>';}
+function doNorteEdit(){S.norteEditing=true;S.norteDraft=loadNorte();R();}
+function doNorteCancelEdit(){S.norteEditing=false;S.norteDraft='';R();}
+
+function doSaveNorte(){
+  var ta=document.getElementById('norte-ta');
+  var t=ta?ta.value.trim():'';
+  if(!t){alert('Escribe tu norte antes de guardar.');return;}
+  saveNorte(t);S.norteEditing=false;S.norteDraft='';R();}
+
+// ── NO-NEGOCIABLES VIEW ───────────────────────────────────────
+function rNonNeg(a){
+  var nn=loadNonNeg();
+  var formHtml='';
+  if(S.nnEditing==='new'||S.nnEditing){
+    var d=S.nnEditData||{valor:'',conducta:''};
+    var isNew=S.nnEditing==='new';
+    formHtml='<div class="nn-form">'
+      +'<label class="nn-form-label">Valor (ej: Integridad, Presencia, Familia)</label>'
+      +'<input class="sim-inp" id="nn-v" type="text" autocorrect="off" spellcheck="false" value="'+esc(d.valor)+'" placeholder="El valor que no negocias">'
+      +'<label class="nn-form-label" style="margin-top:16px">Conducta concreta que lo viola — en primera persona</label>'
+      +'<textarea class="sim-ta" id="nn-c" rows="3" placeholder="No suavizo feedback a mi equipo para no sentir incomodidad.">'+esc(d.conducta)+'</textarea>'
+      +'<div style="display:flex;gap:10px;margin-top:16px">'
+      +'<button class="btn bg" style="padding:10px 24px;font-size:.66rem" onclick="saveNnItem(\''+esc(S.nnEditing)+'\')">'+( isNew?'Añadir':'Guardar')+'</button>'
+      +'<button class="btn" style="padding:10px 20px;font-size:.66rem" onclick="S.nnEditing=null;S.nnEditData={valor:\'\',conducta:\'\'};R()">Cancelar</button>'
+      +'</div></div>';}
+  var items=nn.map(function(item){
+    return '<div class="nn-item">'
+      +'<div class="nn-valor">'+esc(item.valor)+'</div>'
+      +'<div class="nn-conducta">'+esc(item.conducta)+'</div>'
+      +'<div class="nn-actions">'
+      +'<button class="nn-act" onclick="editNnItem(\''+item.id+'\')">Editar</button>'
+      +'<button class="nn-act del" onclick="delNnItem(\''+item.id+'\')">Eliminar</button>'
+      +'</div></div>';
+  }).join('');
+  var addBtn=S.nnEditing?'':'<button class="btn bg" style="padding:11px 28px;font-size:.68rem;margin-bottom:28px" onclick="S.nnEditing=\'new\';S.nnEditData={valor:\'\',conducta:\'\'};R()">+ Añadir no-negociable</button>';
+  var empty=!nn.length&&!S.nnEditing?'<div class="nn-empty">Define tus líneas rojas.<br>Lo que nunca cruzarás, nombrado con precisión.</div>':'';
+  a.innerHTML='<div class="se"><div class="sh"><div><div class="ls">LUCID</div><div class="ld">No-Negociables</div></div><button class="bb" onclick="goHome()">← Inicio</button></div>'
+    +'<p style="font-size:.78rem;color:rgba(236,232,224,0.5);line-height:1.7;margin-bottom:28px">Los No-Negociables no son valores abstractos — son conductas concretas que nunca cruzarás. Cuanto más específicos, más fuerza tienen. LUCID los tendrá presentes en cada sesión.</p>'
+    +addBtn+formHtml+items+empty+'</div>';}
+
+
+// ── ACTIONS ──────────────────────────────────────────────────
+function goHome(){
+  S.page='home';S.sessions=lss();S.review=null;S.cdel=null;
+  S.nnEditing=null;S.nnEditData={valor:'',conducta:''};S.norteEditing=false;S.norteDraft='';
+  S.generatingReport=false;
+  S.sess={id:null,type:'write',phase:'write',input:'',conversation:[],apiHistory:[],orch:null,saving:false,error:null};
+  R();}
+function startWrite(){
+  S.sess={id:null,type:'write',phase:'write',input:'',conversation:[],apiHistory:[],orch:null,saving:false,error:null};
+  S.page='session';R();}
+function startLucid(){
+  S.sess={id:null,type:'lucid',phase:'thinking',input:'',conversation:[],apiHistory:[],orch:null,saving:false,error:null};
+  S.page='session';R();doProLucid();}
+function doStartFresh(){var k=document.getElementById('wkey');if(k)setk(k.value.trim());S.page='home';S.sessions=lss();R();}
+function oRev(id){S.review=S.sessions.find(function(s){return s.id===id});S.page='review';R();}
+function doDel(id){var s=lss().filter(function(x){return x.id!==id});sss(s);S.sessions=s;S.cdel=null;gistPush();if(S.review&&S.review.id===id)goHome();else R();}
+function updW(){var ok=S.sess.input.length>=20;var b=document.getElementById('sb');if(b){b.disabled=!ok;b.className=ok?'btn bg':'btn'}var c=document.getElementById('ctr');if(c)c.textContent=ok?'':Math.max(0,20-S.sess.input.length)+' caracteres más';}
+
+// ── NO-NEGOCIABLES CRUD ───────────────────────────────────────
+function saveNnItem(editing){
+  var v=(document.getElementById('nn-v')||{}).value||'';
+  var c=(document.getElementById('nn-c')||{}).value||'';
+  if(!v.trim()||!c.trim()){alert('Completa ambos campos.');return;}
+  var nn=loadNonNeg();
+  if(editing==='new'){nn.push({id:'nn-'+Date.now(),valor:v.trim(),conducta:c.trim(),created:Date.now()});}
+  else{var idx=nn.findIndex(function(x){return x.id===editing});if(idx>=0){nn[idx].valor=v.trim();nn[idx].conducta=c.trim();}}
+  saveNonNeg(nn);S.nnEditing=null;S.nnEditData={valor:'',conducta:''};R();}
+function editNnItem(id){var nn=loadNonNeg(),item=nn.find(function(x){return x.id===id});if(!item)return;S.nnEditing=id;S.nnEditData={valor:item.valor,conducta:item.conducta};R();}
+function delNnItem(id){if(!confirm('¿Eliminar este no-negociable?'))return;var nn=loadNonNeg().filter(function(x){return x.id!==id});saveNonNeg(nn);R();}
+
+
+// ── SESSION FLOW ─────────────────────────────────────────────
+async function doSub(){
+  if(S.sess.input.length<20||S.sess.phase==='thinking')return;
+  S.sess.error=null;S.sess.phase='thinking';
+  S.sess.id='s-'+Date.now();S.sess.conversation=[];S.sess.apiHistory=[];R();
+  try{
+    var orch=await orchestrate(S.sess.input);
+    S.sess.orch=orch;
+    S.sess.phase='active';
+    S.sess.conversation.push({role:'user',text:S.sess.input});
+    S.sess.apiHistory.push({role:'user',content:S.sess.input});
+    S.sess.conversation.push({role:'loading'});R();scrollB();
+    var mem=loadMem();
+    var raw=await api(buildLucidSys(orch.mode||'socratico',buildMemCtx(mem,orch.temporal_horizon||'presente'),orch.temporal_horizon||'presente',orch.cierre_tipo||'pregunta',buildNonNegCtx(),1,buildNorteCtx()),S.sess.apiHistory,MODEL_DEEP);
+    var parsed=parseLucid(raw);
+    S.sess.apiHistory.push({role:'assistant',content:raw});
+    S.sess.conversation=S.sess.conversation.filter(function(m){return m.role!=='loading'});
+    S.sess.conversation.push(Object.assign({role:'lucid',mode:orch.mode||'socratico'},parsed));
+    R();persist();scrollB();
+    S.sess.saving=true;R();
+    await updateMem(S.sess.input,raw,orch.mode||'socratico');
+    S.sess.saving=false;R();
+  }catch(e){
+    S.sess.error=e.message;S.sess.phase='active';
+    S.sess.conversation=S.sess.conversation.filter(function(m){return m.role!=='loading'});R();}}
+
+async function doRep(){
+  var el=document.getElementById('ur'),t=el?el.value.trim():'';if(!t)return;el.value='';
+  S.sess.conversation.push({role:'user',text:t});
+  S.sess.apiHistory.push({role:'user',content:t});
+  S.sess.conversation.push({role:'loading'});R();scrollB();
+  try{
+    var mem=loadMem();
+    // Calcular turno actual (cuántas respuestas de LUCID ya hay en la conversación)
+    var turnNum=S.sess.conversation.filter(function(m){return m.role==='lucid'}).length+1;
+    var reOrch=await orchestrate(t);
+    var mode=reOrch.mode||'socratico';
+    var cierreTipo=reOrch.cierre_tipo||'pregunta';
+    S.sess.orch=Object.assign({},S.sess.orch,{mode:mode,tolerance:reOrch.tolerance,cierre_tipo:cierreTipo});
+    var raw=await api(buildLucidSys(mode,buildMemCtx(mem,(S.sess.orch&&S.sess.orch.temporal_horizon)||'presente'),(S.sess.orch&&S.sess.orch.temporal_horizon)||'presente',cierreTipo,buildNonNegCtx(),turnNum,buildNorteCtx()),S.sess.apiHistory,MODEL_DEEP);
+    var parsed=parseLucid(raw);
+    S.sess.apiHistory.push({role:'assistant',content:raw});
+    S.sess.conversation=S.sess.conversation.filter(function(m){return m.role!=='loading'});
+    S.sess.conversation.push(Object.assign({role:'lucid',mode:mode},parsed));
+    R();persist();scrollB();
+    S.sess.saving=true;R();
+    await updateMem(t,raw,mode);
+    S.sess.saving=false;R();
+  }catch(e){
+    S.sess.error=e.message;
+    S.sess.conversation=S.sess.conversation.filter(function(m){return m.role!=='loading'});R();}}
+
+async function doProLucid(){
+  S.sess.error=null;
+  try{
+    var mem=loadMem();
+    var r=await api(buildProSys(buildMemCtx(mem,'presente')),[{role:'user',content:'¿Qué tensión necesita confrontar Fernando hoy?'}],MODEL_FAST);
+    var d=JSON.parse(r.replace(/```json|```/g,'').trim());
+    var modoInicial=d.tipo==='B'?'proyectar':d.tipo==='C'?'despacho':'confrontador';
+    S.sess.orch={mode:modoInicial,topic:d.topic||'',temporal_horizon:d.horizonte||'presente',fuente_filosofica:d.fuente_filosofica||null,angulo_liminal:d.angulo_liminal||null,tipo_apertura:d.tipo||'A'};
+    S.sess.input='[LUCID inicia] '+(d.topic||'');
+    S.sess.phase='active';
+    var hzLabel=HORIZONTE_LABEL[d.horizonte||'presente']||d.horizonte||'presente';
+    var tipoLabel=d.tipo==='B'?'APERTURA DE DESARROLLO':d.tipo==='C'?'DESPACHO':'APERTURA LIMINAL';
+    var proPrompt=(d.prompt||'Abre la sesión sobre: '+d.topic)+'\n\nTIPO DE APERTURA: '+tipoLabel+'\nHorizonte temporal: '+hzLabel+'.\nÁngulo: '+(d.angulo_liminal||'tensión en el borde de lo no dicho')+'.\nInicia directamente. Tipo B: nombra la brecha de desarrollo y nivel concreto. Tipo C: empieza por la idea exterior, construye el puente con precisión, abre con curiosidad intelectual — no análisis terapéutico.';
+    S.sess.apiHistory.push({role:'user',content:proPrompt});
+    S.sess.conversation.push({role:'loading'});R();
+    var raw=await api(buildLucidSys(modoInicial,buildMemCtx(mem,modoInicial==='despacho'?'despacho':d.horizonte||'presente'),d.horizonte||'presente','pregunta',buildNonNegCtx(),1,buildNorteCtx()),S.sess.apiHistory,MODEL_DEEP);
+    var parsed=parseLucid(raw);
+    S.sess.apiHistory.push({role:'assistant',content:raw});
+    S.sess.conversation=S.sess.conversation.filter(function(m){return m.role!=='loading'});
+    S.sess.conversation.push(Object.assign({role:'lucid',mode:modoInicial},parsed));
+    R();persist();scrollB();
+    S.sess.saving=true;R();
+    await updateMem(d.topic||'',raw,modoInicial);
+    S.sess.saving=false;R();
+  }catch(e){
+    S.sess.error=e.message;S.sess.phase='active';
+    S.sess.conversation=S.sess.conversation.filter(function(m){return m.role!=='loading'});R();}}
+
+
+// ── ACCOUNTABILITY CHECK-IN ────────────────────────────────────
+function needsCheckin(){
+  var mem=loadMem();
+  if(!mem.lastClosure||!mem.generativeClosures||!mem.generativeClosures.length)return false;
+  var latest=mem.generativeClosures[0];
+  if(!latest||!latest.ts)return false;
+  if(Date.now()-latest.ts>72*3600000)return false;
+  var today=new Date().toDateString();
+  if(mem.lastCheckinDate===today)return false;
+  return true;}
+
+function doCheckin(answer){
+  var mem=loadMem();
+  var today=new Date().toDateString();
+  var newConsec=answer==='no'?(mem.consecutiveNo||0)+1:0;
+  var log=[{ts:Date.now(),answer:answer,closureText:mem.lastClosure||''},...(mem.accountabilityLog||[])].slice(0,20);
+  saveMem(Object.assign({},mem,{lastCheckinDate:today,consecutiveNo:newConsec,accountabilityLog:log}));
+  gistPush();S.page='home';R();}
+
+function skipCheckin(){
+  var mem=loadMem();
+  saveMem(Object.assign({},mem,{lastCheckinDate:new Date().toDateString()}));
+  S.page='home';R();}
+
+function rCheckin(a){
+  var mem=loadMem();
+  var closure=mem.lastClosure||'';
+  var latest=(mem.generativeClosures||[])[0];
+  var age=latest?Math.round((Date.now()-latest.ts)/86400000):1;
+  var ageStr=age===0?'hoy':age===1?'ayer':'hace '+age+' días';
+  var streak=(mem.consecutiveNo||0)>=2?'<p style="font-size:.7rem;color:rgba(192,57,43,0.7);margin-bottom:20px;font-style:italic">'+mem.consecutiveNo+' cierres sin seguimiento — LUCID lo tendrá en cuenta.</p>':'';
+  a.innerHTML='<div class="home" style="max-width:480px"><div class="ring">◈</div><p style="font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(212,176,86,0.7);margin-bottom:22px">Seguimiento · '+esc(ageStr)+'</p><p style="font-size:1rem;color:rgba(236,232,224,0.82);line-height:1.95;max-width:400px;font-style:italic;margin-bottom:20px">"'+esc(closure)+'"</p>'+streak+'<p style="font-size:.74rem;color:rgba(236,232,224,0.5);margin-bottom:24px;letter-spacing:.04em">¿Lo hiciste?</p><div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:260px"><button class="btn bg" style="padding:16px" onclick="doCheckin(\'si\')">Sí, lo hice</button><button class="btn" style="padding:16px" onclick="doCheckin(\'parcial\')">Parcialmente</button><button class="btn" style="padding:16px;color:rgba(192,57,43,0.7);border-color:rgba(192,57,43,0.3)" onclick="doCheckin(\'no\')">No lo hice</button></div><button class="bb" style="margin-top:32px;font-size:.66rem" onclick="skipCheckin()">Omitir por hoy</button></div>';}
+
+// ── INFORME COGNITIVO ─────────────────────────────────────────
+function buildReportSys(mem,sessCtx){
+  var md=JSON.stringify({sessionCount:mem.sessionCount,patterns:mem.patterns,activeBiases:mem.activeBiases,valueConflicts:mem.valueConflicts,avoidedDecisions:mem.avoidedDecisions,activeResistances:mem.activeResistances,recurringThemes:mem.recurringThemes,growth:mem.growth,blindSpots:mem.blindSpots,keyInsights:mem.keyInsights,recycledInsights:mem.recycledInsights,commitments:mem.commitments,virtudes:mem.virtudes,emotionalState:mem.emotionalState,consecutiveNo:mem.consecutiveNo||0,lastMode:mem.lastMode,sessionModes:(mem.sessionModes||[]).slice(0,10)},null,0);
+  return'Eres LUCID generando un informe cognitivo para Fernando. Espejo de largo plazo — directo, sin adulación, con la voz de LUCID.\n\nMEMORIA LONGITUDINAL:\n'+md+'\n\nHISTORIAL DE SESIONES:\n'+sessCtx+'\n\nPERFIL:\n'+BASE+'\n\nGenera el informe con estas secciones. Sin asteriscos ni markdown — texto limpio, secciones en MAYÚSCULAS:\n\nLO QUE SE MOVIÓ\nEvidencia concreta de cambio real. Conductas que cambiaron, decisiones tomadas, patrones que evolucionaron. Solo si hay evidencia — no suposiciones.\n\nLO QUE PERSISTE\nPatrones activos sin evidencia de movimiento. Decisiones que se siguen evitando. Nombra cuánto tiempo llevan sin moverse.\n\nLO QUE ESTÁ EMERGIENDO\nPatrones que el sistema detecta pero Fernando probablemente no ve desde dentro. Tendencias recientes, acumulaciones, cambios de tono.\n\nLA BRECHA PRINCIPAL\nUna sola cosa. La que si se trabajara tendría mayor impacto ahora. Basada en evidencia del historial — no juicios generales.\n\nFOCO PRÓXIMAS SEMANAS\n1-2 áreas concretas basadas en lo que la evidencia muestra que necesita — no lo que Fernando dice querer.\n\nExtensión: 400-500 palabras. Voz de LUCID: directa, sin adornos.';}
+
+async function doGenReport(){
+  if(S.generatingReport)return;
+  S.generatingReport=true;S.report=null;R();
+  try{
+    var mem=loadMem();
+    var sessions=lss().slice(0,20);
+    var sc=sessions.map(function(s,i){
+      var mode=s.orch&&s.orch.mode?MODE_LABEL[s.orch.mode]||s.orch.mode:'—';
+      var topic=s.type==='lucid'&&s.orch&&s.orch.topic?s.orch.topic:(s.conversation&&s.conversation[0]&&s.conversation[0].text?s.conversation[0].text.slice(0,80):'—');
+      var msgs=s.conversation?s.conversation.filter(function(m){return m.role==='lucid'}):[];
+      var closure=msgs.length&&msgs[msgs.length-1].closure?msgs[msgs.length-1].closure.slice(0,100):'';
+      return(i+1)+'. ['+fd(s.ts)+'] '+mode+' — '+topic+(closure?' → Cierre: '+closure:'');
+    }).join('\n');
+    var raw=await api(buildReportSys(mem,sc),[{role:'user',content:'Genera el informe ahora.'}],MODEL_DEEP);
+    S.report=raw;
+  }catch(e){S.report='Error al generar el informe: '+e.message;}
+  S.generatingReport=false;R();}
+
+// ── START ─────────────────────────────────────────────────────
+initCheck();
+</script>
+</body>
+</html>                                                                                     
