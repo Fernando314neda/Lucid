@@ -295,7 +295,7 @@ CÓMO TRABAJAR CON ÉL:
 - Cuando el escudo aparezca (minimizar un logro, pedestal innecesario, pedir validación que no necesita), nómbralo como espejo.
 - Trabaja desde el destino, no desde el problema. Necesita construcción, no más diagnóstico.
 - Respeta su sistema de decisión: análisis para filtrar, sensación para cerrar.
-- El proyecto con Nacho es el vector central. Cualquier trabajo en IA, consultoría, estructura de negocio conecta directamente con esto.\`;
+- El proyecto con Nacho es el vector central. Cualquier trabajo en IA, consultoría, estructura de negocio conecta directamente con esto.`;
 
 // ── PROMPTS ──────────────────────────────────────────────────
 function buildLucidSys(memCtx,turnNum,arrivalState){
@@ -336,7 +336,7 @@ PERFIL DE FERNANDO:
 ${BASE}
 
 MEMORIA LONGITUDINAL:
-${memCtx}\`}
+${memCtx}`}
 
 function buildLearnSys(memCtx,area,topic,arrivalState,turnNum){
   var tn=turnNum||1;
@@ -367,7 +367,7 @@ PERFIL DE FERNANDO:
 ${BASE}
 
 MEMORIA LONGITUDINAL:
-${memCtx}\`}
+${memCtx}`}
 
 const MEM_SYS=`Eres la memoria longitudinal de LUCID. Actualiza el perfil cognitivo de Fernando.
 REGLAS: Detecta repetición sin cambio. Compromisos incumplidos 2+ sesiones=patrón. Diferencia insight nuevo de reciclado.
@@ -376,11 +376,11 @@ Deltas: mentor→challenge+1 si hubo confrontación, comfort+1 si fue validació
 VIRTUDES: capacidades en construcción activa. Solo si la sesión las tocó claramente. Fusiona similares, máximo 6.
 ESCUDO: detecta activaciones (minimizar logro, pedestal a otro, buscar validación innecesaria). Anota en escudoActivations.
 NACHO/IA: si la sesión tocó el proyecto con Nacho, anota estado en nachoProgress.
-Responde SOLO JSON: {"patterns":[],"activeBiases":[],"valueConflicts":[],"avoidedDecisions":[],"activeResistances":[],"recurringThemes":[],"emotionalState":"","growth":[],"blindSpots":[],"keyInsights":[],"recycledInsights":[],"commitments":[],"virtudes":[],"lastTopics":[],"escudoActivations":[],"nachoProgress":"","comfortDelta":0,"challengeDelta":0,"generativeClosureText":"cierre exacto"}\`;
+Responde SOLO JSON: {"patterns":[],"activeBiases":[],"valueConflicts":[],"avoidedDecisions":[],"activeResistances":[],"recurringThemes":[],"emotionalState":"","growth":[],"blindSpots":[],"keyInsights":[],"recycledInsights":[],"commitments":[],"virtudes":[],"lastTopics":[],"escudoActivations":[],"nachoProgress":"","comfortDelta":0,"challengeDelta":0,"generativeClosureText":"cierre exacto"}`;
 
 const LEARN_MEM_SYS=`Eres la memoria de LUCID actualizando el perfil de aprendizaje de Fernando.
 Detecta: qué conceptos quedaron claros, cuáles con gap, qué aplicó realmente vs qué solo articuló.
-Responde SOLO JSON: {"learningTopics":["área: tema trabajado"],"conceptsApplied":["concepto: cómo lo aplicó"],"knowledgeGaps":["gap detectado"],"nachoProgress":"estado del proyecto si fue relevante — si no, vacío","generativeClosureText":"la acción de 48h exacta"}\`;
+Responde SOLO JSON: {"learningTopics":["área: tema trabajado"],"conceptsApplied":["concepto: cómo lo aplicó"],"knowledgeGaps":["gap detectado"],"nachoProgress":"estado del proyecto si fue relevante — si no, vacío","generativeClosureText":"la acción de 48h exacta"}`;
 // ── MEMORY ───────────────────────────────────────────────────
 const EMPTY_MEM={sessionCount:0,patterns:[],activeBiases:[],valueConflicts:[],avoidedDecisions:[],activeResistances:[],recurringThemes:[],emotionalState:'',growth:[],blindSpots:[],keyInsights:[],recycledInsights:[],commitments:[],virtudes:[],lastTopics:[],escudoActivations:[],nachoProgress:'',generativeClosures:[],lastClosure:null,closureFollowedUp:false,comfortCount:0,challengeCount:0,lastMode:null,sessionModes:[],lastCheckinDate:null,consecutiveNo:0,accountabilityLog:[],learningTopics:[],conceptsApplied:[],knowledgeGaps:[],emotionalHistory:[]};
 
