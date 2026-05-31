@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="LUCID v17">
+<meta name="apple-mobile-web-app-title" content="LUCID v18">
 <meta name="theme-color" content="#15151E">
 <title>LUCID</title>
 <style>
@@ -183,17 +183,6 @@ h1{font-size:clamp(2.6rem,7vw,4rem);font-weight:400;letter-spacing:.2em;margin-b
 .arrive-opt:hover{border-color:rgba(212,176,86,0.5);background:rgba(212,176,86,0.06)}
 .arrive-opt-icon{font-size:1.1rem;width:24px;text-align:center;flex-shrink:0}
 .arrive-opt-label{font-size:.8rem;color:rgba(236,232,224,0.78);letter-spacing:.04em}
-/* ── LEARN SELECT ── */
-.learn-area{padding:22px 24px;border:1px solid rgba(107,159,212,0.28);border-radius:5px;cursor:pointer;background:rgba(107,159,212,0.04);transition:all .22s;margin-bottom:14px}
-.learn-area:hover{border-color:rgba(107,159,212,0.6);background:rgba(107,159,212,0.10)}
-.learn-area-icon{font-size:1.2rem;margin-bottom:8px}
-.learn-area-title{font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(107,159,212,0.9);margin-bottom:6px}
-.learn-area-desc{font-size:.75rem;color:rgba(236,232,224,0.55);line-height:1.55}
-/* ── LEARN TOPIC ── */
-.learn-topic-item{padding:14px 18px;border:1px solid rgba(236,232,224,0.15);border-radius:4px;cursor:pointer;background:rgba(236,232,224,0.02);transition:all .2s;margin-bottom:10px;font-size:.82rem;color:rgba(236,232,224,0.75);line-height:1.5}
-.learn-topic-item:hover{border-color:rgba(107,159,212,0.45);background:rgba(107,159,212,0.06);color:rgba(236,232,224,0.92)}
-/* ── LEARN SESSION ── */
-.msg-learn{background:rgba(107,159,212,0.08);border:1px solid rgba(107,159,212,0.25);border-radius:3px 12px 12px 12px;padding:22px 24px;font-size:.95rem;line-height:1.95;color:rgba(236,232,224,0.93);white-space:pre-wrap}
 /* ── ACCOUNTABILITY ── */
 .acc-block{background:rgba(212,176,86,0.06);border:1px solid rgba(212,176,86,0.28);border-radius:5px;padding:18px 20px;margin-bottom:24px;text-align:left}
 .acc-label{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(212,176,86,0.6);margin-bottom:8px}
@@ -224,7 +213,7 @@ h1{font-size:clamp(2.6rem,7vw,4rem);font-weight:400;letter-spacing:.2em;margin-b
 <div id="app" class="pg"></div>
 <script>
 // ═══════════════════════════════════════════════════════════════
-// LUCID v17
+// LUCID v18
 // ═══════════════════════════════════════════════════════════════
 
 const MODEL_FAST = 'claude-haiku-4-5-20251001';
@@ -300,37 +289,39 @@ CÓMO TRABAJAR CON ÉL:
 // ── PROMPTS ──────────────────────────────────────────────────
 function buildLucidSys(memCtx,turnNum,arrivalState){
   var tn=turnNum||1;
-  var depth=tn===1
-    ?'TURNO 1 — Lee la situación. Da tu análisis y recomendación. 200-280 palabras.'
-    :tn===2
-    ?'TURNO 2 — Fernando ha respondido. Profundiza en el ángulo que más importa. 200-280 palabras.'
-    :'TURNO '+tn+' — Cierra con una recomendación concreta y accionable. 150-200 palabras.';
   var arrival=arrivalState?'\nESTADO DE LLEGADA: '+arrivalState:'';
-  return `Eres LUCID — mentor de Fernando. Conoces su perfil, sus patrones y su contexto en profundidad.
+  var estructura=tn===1
+    ?`TURNO 1 — TRES LENTES:
+Lee la situación desde los tres ángulos simultáneamente. Comparte lo más importante de cada uno — no todo, solo lo que tiene peso real. NO des recomendación todavía. Cierra con una sola pregunta que abra el ángulo más fértil para este momento. 200-260 palabras.`
+    :tn===2
+    ?`TURNO 2 — PROFUNDIDAD:
+Profundiza en lo que emergió del intercambio anterior. Explora el siguiente ángulo si tiene sustancia real. Si hay claridad suficiente, da una recomendación tentativa — no definitiva. 180-240 palabras.`
+    :`TURNO ${tn} — CONVERGENCIA:
+Integra lo trabajado en la sesión. Recomendación final clara y concreta. Cierre generativo que sigue trabajando solo. 150-200 palabras.`;
+  return `Eres LUCID — el único interlocutor que conoce a Fernando en profundidad y sin agenda propia.
 
-FUNCIÓN: Dar consejo directo. No terapia, no solo preguntas — análisis real y recomendación clara.
-Ves lo que está pasando, dices lo que piensas, recomiendas lo que harías.
+FUNCIÓN: Acompañar el pensamiento de Fernando hasta que llegue a algo real. No el camino más rápido a la respuesta — el camino más honesto a la claridad.
 
-VOZ: Alguien que ha procesado la situación completa y no necesita validación para opinar.
-Combina análisis con acción. Si hay que confrontar algo, lo nombras. Si hay claridad, la refuerzas.
-Lenguaje de conducta siempre — nunca de identidad. Humildad epistémica: solo sabes lo que Fernando describe.${arrival}
+VOZ: Presencia sin urgencia. Autoridad sin ego. Directo cuando hay que serlo. Lenguaje de conducta siempre — nunca de identidad. Humildad epistémica permanente: solo sabes lo que Fernando describe.${arrival}
 
-NORTE DE REFERENCIA: El Fernando de 50 — antifrágil, con negocio propio consolidado, viviendo en Cádiz, sin depender de Tetra Pak. Cuando hagas una recomendación, pregúntate si acerca o aleja de ese norte.
+TRES LENTES — activas en cada turno, con diferente peso según el momento:
+① SITUACIONAL — qué está pasando realmente ahora. No lo que Fernando dice que pasa — lo que el texto revela bajo la superficie.
+② LONGITUDINAL — qué patrón de la memoria aparece de fondo. Solo si hay evidencia real — no forzar conexiones.
+③ FERNANDO DE 50 — qué ve este hombre desde fuera. Qué elegiría. Qué rechazaría. Qué le diría a Fernando ahora mismo.
 
-PATRONES A DETECTAR:
+PATRONES A DETECTAR SIEMPRE:
 — El Escudo: si Fernando minimiza un logro propio, construye un pedestal innecesario, o pide validación que no necesita → nómbralo directamente como espejo.
-— Trabaja desde el destino: si viene con análisis circular, llévalo hacia una decisión o paso ejecutable concreto.
+— Decisión evitada: si lleva varios turnos en el mismo punto sin moverse → señálalo sin rodeos.
+— Calibración "los suyos": si está sacrificando lo que quiere para hacer feliz a otros (excepto mujer e hijos) → ponlo sobre la mesa.
 
-ESTRUCTURA (marcadores exactos):
-[L] [1-2 líneas: estado emocional detectado + sesgo activo si lo hay. Factual, sin juicio.]
----
-[cuerpo: análisis directo de la situación + recomendación concreta. Sin formato rígido.]
----
-[P] [Opcional: perspectiva adicional — algo que Fernando probablemente no está viendo. 2-3 frases. Omite si no tienes nada genuino.]
----
-↳ [Una acción o decisión específica para las próximas 24-48h. Sin introducción. Una sola cosa.]
+${estructura}
 
-${depth}
+FORMATO (marcadores exactos, en este orden):
+[L] [1-2 líneas: lo más importante que detectas ahora — estado emocional + patrón si lo hay. Factual, sin juicio.]
+---
+[cuerpo: las lentes en el orden que corresponda al turno. Flujo natural, sin subtítulos rígidos.]
+---
+↳ [Desde turno 2: una pregunta o acción que lleva al siguiente nivel. Solo una cosa. Sin introducción.]
 
 PERFIL DE FERNANDO:
 ${BASE}
@@ -338,36 +329,6 @@ ${BASE}
 MEMORIA LONGITUDINAL:
 ${memCtx}`}
 
-function buildLearnSys(memCtx,area,topic,arrivalState,turnNum){
-  var tn=turnNum||1;
-  var fase=tn===1
-    ?'FASE 1 — ACTIVACIÓN: No expliques el concepto todavía. Pregunta primero qué sabe Fernando sobre este tema o cómo lo abordaría ahora mismo. Escucha el gap. Cierra con una pregunta que lo revele. 120-160 palabras.'
-    :tn<=3
-    ?'FASE 2 — MARCO: Ahora explica el concepto clave con un ejemplo concreto de su contexto real (Nacho/IA, Tetra Pak, su equipo). Nada abstracto. Cierra con: ¿Cómo aplicarías esto a [situación concreta suya]? 200-250 palabras.'
-    :'FASE 3 — APLICACIÓN Y CIERRE: Fernando está aplicando el marco. Da feedback específico sobre su aplicación. Cierra con una acción concreta de 48h con un entregable claro — no reflexión, sino algo que pueda mostrar. 150-200 palabras.';
-  return `Eres LUCID en modo Mentor. Enseñas a Fernando mediante Socrático aplicado — nunca conferencia, siempre diálogo que construye entendimiento real.
-
-ÁREA: ${area}
-TEMA: ${topic}
-ESTADO DE LLEGADA: ${arrivalState||'no especificado'}
-OBJETIVO: Que Fernando pueda usar este marco sin ti la semana siguiente. Autonomía, no dependencia.
-
-${fase}
-
-VOZ: Mentor que ya procesó el tema. Directo, aplicado al contexto real de Fernando. Si detectas el escudo (minimización de su propio conocimiento), nómbralo.
-
-FORMATO:
-[L] [1 línea: disposición de llegada + tipo de aprendizaje posible hoy]
----
-[cuerpo: la fase correspondiente — flujo natural]
----
-↳ [Solo en fase de cierre: acción de 48h con entregable específico]
-
-PERFIL DE FERNANDO:
-${BASE}
-
-MEMORIA LONGITUDINAL:
-${memCtx}`}
 
 const MEM_SYS=`Eres la memoria longitudinal de LUCID. Actualiza el perfil cognitivo de Fernando.
 REGLAS: Detecta repetición sin cambio. Compromisos incumplidos 2+ sesiones=patrón. Diferencia insight nuevo de reciclado.
@@ -378,11 +339,9 @@ ESCUDO: detecta activaciones (minimizar logro, pedestal a otro, buscar validaci�
 NACHO/IA: si la sesión tocó el proyecto con Nacho, anota estado en nachoProgress.
 Responde SOLO JSON: {"patterns":[],"activeBiases":[],"valueConflicts":[],"avoidedDecisions":[],"activeResistances":[],"recurringThemes":[],"emotionalState":"","growth":[],"blindSpots":[],"keyInsights":[],"recycledInsights":[],"commitments":[],"virtudes":[],"lastTopics":[],"escudoActivations":[],"nachoProgress":"","comfortDelta":0,"challengeDelta":0,"generativeClosureText":"cierre exacto"}`;
 
-const LEARN_MEM_SYS=`Eres la memoria de LUCID actualizando el perfil de aprendizaje de Fernando.
-Detecta: qué conceptos quedaron claros, cuáles con gap, qué aplicó realmente vs qué solo articuló.
-Responde SOLO JSON: {"learningTopics":["área: tema trabajado"],"conceptsApplied":["concepto: cómo lo aplicó"],"knowledgeGaps":["gap detectado"],"nachoProgress":"estado del proyecto si fue relevante — si no, vacío","generativeClosureText":"la acción de 48h exacta"}`;
+
 // ── MEMORY ───────────────────────────────────────────────────
-const EMPTY_MEM={sessionCount:0,patterns:[],activeBiases:[],valueConflicts:[],avoidedDecisions:[],activeResistances:[],recurringThemes:[],emotionalState:'',growth:[],blindSpots:[],keyInsights:[],recycledInsights:[],commitments:[],virtudes:[],lastTopics:[],escudoActivations:[],nachoProgress:'',generativeClosures:[],lastClosure:null,closureFollowedUp:false,comfortCount:0,challengeCount:0,lastMode:null,sessionModes:[],lastCheckinDate:null,consecutiveNo:0,accountabilityLog:[],learningTopics:[],conceptsApplied:[],knowledgeGaps:[],emotionalHistory:[]};
+const EMPTY_MEM={sessionCount:0,patterns:[],activeBiases:[],valueConflicts:[],avoidedDecisions:[],activeResistances:[],recurringThemes:[],emotionalState:'',growth:[],blindSpots:[],keyInsights:[],recycledInsights:[],commitments:[],virtudes:[],lastTopics:[],escudoActivations:[],nachoProgress:'',growthDimension:'',generativeClosures:[],lastClosure:null,closureFollowedUp:false,comfortCount:0,challengeCount:0,lastMode:null,sessionModes:[],lastCheckinDate:null,consecutiveNo:0,accountabilityLog:[],learningTopics:[],conceptsApplied:[],knowledgeGaps:[],emotionalHistory:[]};
 
 function loadMem(){try{var m=JSON.parse(localStorage.getItem('lucid-mem')||'null');if(!m)return{...EMPTY_MEM};if(!m.virtudes)m.virtudes=[];if(m.consecutiveNo===undefined)m.consecutiveNo=0;if(!m.accountabilityLog)m.accountabilityLog=[];if(!m.escudoActivations)m.escudoActivations=[];if(m.nachoProgress===undefined)m.nachoProgress='';if(!m.learningTopics)m.learningTopics=[];if(!m.conceptsApplied)m.conceptsApplied=[];if(!m.knowledgeGaps)m.knowledgeGaps=[];if(!m.emotionalHistory)m.emotionalHistory=[];if(m.closureFollowedUp===undefined)m.closureFollowedUp=false;return Object.assign({},EMPTY_MEM,m);}catch{return{...EMPTY_MEM}}}
 function saveMem(m){localStorage.setItem('lucid-mem',JSON.stringify(m))}
@@ -406,6 +365,7 @@ function buildMemCtx(m){
   if(m.virtudes&&m.virtudes.length)t+='\nVirtudes en construcción: '+m.virtudes.join('; ');
   if(m.escudoActivations&&m.escudoActivations.length)t+='\nActivaciones del escudo: '+m.escudoActivations.slice(0,3).join('; ');
   if(m.nachoProgress)t+='\nProyecto Nacho/IA — estado: '+m.nachoProgress;
+  if(m.growthDimension)t+='\nÚltima dimensión trabajada: '+m.growthDimension;
   if(m.keyInsights&&m.keyInsights.length)t+='\nInsights activos: '+m.keyInsights.slice(0,4).join('; ');
   if(m.learningTopics&&m.learningTopics.length)t+='\nTemas aprendidos: '+m.learningTopics.slice(0,4).join('; ');
   if(m.conceptsApplied&&m.conceptsApplied.length)t+='\nConceptos aplicados: '+m.conceptsApplied.slice(0,3).join('; ');
@@ -497,27 +457,10 @@ async function updateMem(input,lucidRaw,mode){
   }catch(e){
     mem.sessionCount=(mem.sessionCount||0)+1;mem.lastMode=mode;saveMem(mem);gistPush();return mem;}}
 
-// ── UPDATE LEARN MEMORY ──────────────────────────────────────
-async function updateLearnMem(conversation,area,topic){
-  var mem=loadMem();
-  try{
-    var sessText=conversation.filter(function(m){return m.role==='user'||m.role==='learn'}).map(function(m){return(m.role==='user'?'FERNANDO: ':'LUCID: ')+(m.text||m.body||'')}).join('\n\n');
-    var r=await api(LEARN_MEM_SYS,[{role:'user',content:'ÁREA: '+area+'\nTEMA: '+topic+'\nSESIÓN:\n'+sessText}],MODEL_FAST);
-    var nm=JSON.parse(r.replace(/```json|```/g,'').trim());
-    var updated=Object.assign({},mem,{
-      learningTopics:[...(nm.learningTopics||[]),...(mem.learningTopics||[])].filter(function(v,i,a){return a.indexOf(v)===i}).slice(0,20),
-      conceptsApplied:[...(nm.conceptsApplied||[]),...(mem.conceptsApplied||[])].filter(function(v,i,a){return a.indexOf(v)===i}).slice(0,15),
-      knowledgeGaps:nm.knowledgeGaps||mem.knowledgeGaps||[],
-      nachoProgress:nm.nachoProgress||mem.nachoProgress||''
-    });
-    if(nm.generativeClosureText){
-      updated.lastClosure=nm.generativeClosureText;updated.closureFollowedUp=false;
-      updated.generativeClosures=[{text:nm.generativeClosureText,ts:Date.now(),followedUp:false,type:'learn'},...(mem.generativeClosures||[])].slice(0,20);}
-    saveMem(updated);gistPush();return updated;
-  }catch(e){saveMem(mem);gistPush();return mem;}}
+
 // ── BACKUP / IMPORT ──────────────────────────────────────────
 function exportBackup(){
-  var data={version:'lucid-17.0',exportedAt:new Date().toISOString(),memory:loadMem(),sessions:lss()};
+  var data={version:'lucid-18.0',exportedAt:new Date().toISOString(),memory:loadMem(),sessions:lss()};
   var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   var url=URL.createObjectURL(blob);
   var a=document.createElement('a');
@@ -546,7 +489,7 @@ function triggerImport(onSuccess){
         if(!migrated.generativeClosures)migrated.generativeClosures=[];
         if(!migrated.sessionModes)migrated.sessionModes=[];
         if(data.sessions){
-          // migrate v7 sessions (lucid-s7) to v8 (lucid-s17)
+          // migrate v7 sessions (lucid-s7) to v8 (lucid-s18)
           sss(data.sessions);}
         saveMem(migrated);
         if(onSuccess)onSuccess(migrated);
@@ -555,8 +498,8 @@ function triggerImport(onSuccess){
     reader.readAsText(f);};
   inp.click();}
 // ── SESSION STORAGE ──────────────────────────────────────────
-function lss(){try{return JSON.parse(localStorage.getItem('lucid-s17')||'[]')}catch{return[]}}
-function sss(s){localStorage.setItem('lucid-s17',JSON.stringify(s))}
+function lss(){try{return JSON.parse(localStorage.getItem('lucid-s18')||'[]')}catch{return[]}}
+function sss(s){localStorage.setItem('lucid-s18',JSON.stringify(s))}
 function persist(){
   if(!S.sess.id)S.sess.id='s-'+Date.now();
   var ss=lss(),idx=ss.findIndex(function(x){return x.id===S.sess.id});
@@ -565,7 +508,7 @@ function persist(){
   sss(ss.slice(0,50));S.sessions=lss();}
 // ── GIST SYNC FUNCTIONS ──────────────────────────────────────
 async function gistCreate(){
-  var data={version:'lucid-17.0',syncedAt:new Date().toISOString(),memory:loadMem(),sessions:lss()};
+  var data={version:'lucid-18.0',syncedAt:new Date().toISOString(),memory:loadMem(),sessions:lss()};
   var r=await fetch('https://api.github.com/gists',{method:'POST',headers:ghHdrs(),body:JSON.stringify({description:'LUCID — Memoria cognitiva personal',public:false,files:{'lucid-data.json':{content:JSON.stringify(data)}}})});
   if(!r.ok){var e=await r.json();throw new Error(e.message||'Error HTTP '+r.status);}
   var d=await r.json();setGistId(d.id);setLastSync(data.syncedAt);return d.id;}
@@ -575,7 +518,7 @@ async function gistPush(){
   var prevPage=S.page;
   SYNC.status='syncing';if(prevPage==='home'||prevPage==='memory')R();
   try{
-    var data={version:'lucid-17.0',syncedAt:new Date().toISOString(),memory:loadMem(),sessions:lss()};
+    var data={version:'lucid-18.0',syncedAt:new Date().toISOString(),memory:loadMem(),sessions:lss()};
     var r=await fetch('https://api.github.com/gists/'+gistId,{method:'PATCH',headers:ghHdrs(),body:JSON.stringify({files:{'lucid-data.json':{content:JSON.stringify(data)}}})});
     if(!r.ok){var er=await r.json();throw new Error(er.message||'Error HTTP '+r.status);}
     setLastSync(data.syncedAt);SYNC.status='ok';SYNC.error=null;
@@ -639,15 +582,6 @@ function tr(t,n){n=n||90;return t&&t.length>n?t.slice(0,n).trim()+'…':t||''}
 function esc(s){var d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
 function scrollB(){setTimeout(function(){window.scrollTo(0,document.body.scrollHeight)},60)}
 function dots(c){return'<div class="ds">'+[0,1,2].map(function(i){return'<div class="dt" style="background:'+c+';animation-delay:'+i*0.25+'s"></div>'}).join('')+'</div>'}
-// ── LEARN AREAS ──────────────────────────────────────────────
-const LEARN_AREAS=[
-  {id:'ia',icon:'◎',title:'IA para negocio',desc:'Evaluar casos de uso reales, estructurar propuestas, hablar con clientes sin background técnico. Aplicado al proyecto con Nacho.',
-   topics:['Cómo evaluar si un caso de uso de IA es viable para una pyme','Cómo estructurar una propuesta de IA para un cliente','Modelos de negocio en consultoría de IA: qué funciona y qué no','Qué puede y qué no puede hacer la IA hoy — límites reales','Cómo hablar con un cliente no técnico sobre implementación de IA']},
-  {id:'liderazgo',icon:'◈',title:'Liderazgo ejecutivo',desc:'La transición de comprensivo sin límites a comprensivo con consecuencias. Feedback, cultura de entrega, gestión hacia arriba.',
-   topics:['Feedback con consecuencias reales sin romper la relación','Cómo construir cultura de entrega en un equipo','Gestión de expectativas hacia arriba — hablar el idioma del jefe','Delegación efectiva: dar dirección sin microgestionar','Comunicación directa cuando hay conflicto o resistencia']},
-  {id:'negocio',icon:'◇',title:'Arquitectura de negocio propio',desc:'De la idea de Nacho/IA a una estructura ejecutable. Propuesta de valor, pricing, primeros clientes, transición.',
-   topics:['Definir propuesta de valor para consultoría de IA: qué problema resuelves realmente','Pricing de servicios de alto valor: cómo cobrar por dirección, no por tiempo','Primeros clientes: cómo conseguirlos y calificarlos sin red establecida','De corporativo a independiente: cómo hacer la transición sin ruptura','Cómo escalar: que otros produzcan con tu dirección']}
-];
 // ── STATE ────────────────────────────────────────────────────
 var S={
   page:'init',
@@ -658,9 +592,6 @@ var S={
   report:null,
   arrivalState:null,
   arrivalCallback:null,
-  learnArea:null,
-  learnTopic:null,
-  learnSess:{id:null,phase:'active',conversation:[],apiHistory:[],saving:false,error:null},
   sess:{id:null,phase:'write',input:'',conversation:[],apiHistory:[],saving:false,error:null}
 };
 // ── INIT ─────────────────────────────────────────────────────
@@ -685,9 +616,6 @@ function R(){
   else if(S.page==='home')rHome(a);
   else if(S.page==='arrive')rArrive(a);
   else if(S.page==='session')rSess(a);
-  else if(S.page==='learn-select')rLearnSelect(a);
-  else if(S.page==='learn-topic')rLearnTopic(a);
-  else if(S.page==='learn-session')rLearnSess(a);
   else if(S.page==='history')rHist(a);
   else if(S.page==='review')rRev(a);
   else if(S.page==='memory')rMem(a);}
@@ -735,25 +663,20 @@ function rHome(a){
   a.innerHTML=`<div class="home">
     <div class="ring">◈</div>
     <h1>LUCID</h1>
-    <p class="sub">Mentor · Reflexión · Aprendizaje</p>
-    <p class="tagline">Análisis real. Recomendación clara. Conocimiento aplicado.</p>
+    <p class="sub">Mentor · Desarrollo cognitivo personal</p>
+    <p class="tagline">Tres lentes. Profundidad real. Sin agenda.</p>
     ${accBlock}
     <div class="modes">
-      <button class="mb" onclick="startArrive('session')" ${k?'':'disabled'}>
+      <button class="mb" onclick="startArrive()" ${k?'':'disabled'}>
         <span class="mi">◈</span>
         <span class="mn">Nueva sesión</span>
-        <span class="md">Reflexión · Consejo directo</span>
-      </button>
-      <button class="mb" onclick="startArrive('learn')" ${k?'':'disabled'} style="border-color:rgba(107,159,212,0.35)">
-        <span class="mi" style="color:rgba(107,159,212,0.8)">◎</span>
-        <span class="mn" style="color:rgba(107,159,212,0.85)">Aprender</span>
-        <span class="md">Socrático · Conocimiento aplicado</span>
+        <span class="md">Tres lentes · Profundidad real</span>
       </button>
     </div>
     ${memBadge}
     ${syncBadge}
     ${S.sessions.length>0?'<div class="mt14"><button class="btn" onclick="S.page=\'history\';S.sessions=lss();R()">Historial ('+S.sessions.length+')</button></div>':''}
-    <p class="ftag">MENTOR · APRENDER · MEMORIA · INFORME COGNITIVO</p>
+    <p class="ftag">MENTOR · TRES LENTES · MEMORIA · INFORME COGNITIVO</p>
     <div class="cb">
       <div class="flbl">API Key</div>
       <input class="ki" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="sk-ant-api03-..." value="${esc(k)}" oninput="setk(this.value.trim())" onblur="this.value=this.value.trim();setk(this.value);R()">
@@ -770,8 +693,8 @@ function rSess(a){
     a.innerHTML=`<div class="se">
       <div class="sh"><div><div class="ls">LUCID</div><div class="ld">◈ Nueva sesión</div></div><button class="bb" onclick="goHome()">← Salir</button></div>
       ${S.sess.error?'<div class="eb">'+esc(S.sess.error)+'</div>':''}
-      <p class="pt">¿Qué está ocupando tu mente ahora mismo?</p>
-      <textarea class="rb" id="ref" placeholder="Escribe con libertad. LUCID analizará y te dará su perspectiva..." oninput="S.sess.input=this.value;updW()">${esc(S.sess.input)}</textarea>
+      <p class="pt">¿Desde dónde llegas hoy? ¿Qué está vivo en ti ahora mismo?</p>
+      <textarea class="rb" id="ref" placeholder="Escribe con libertad. Qué pasa, qué sientes, qué te pesa, qué quieres entender..." oninput="S.sess.input=this.value;updW()">${esc(S.sess.input)}</textarea>
       <div class="input-row">
         <span id="ctr" class="ctr-hint">${ok?'':Math.max(0,20-S.sess.input.length)+' caracteres más'}</span>
         <button id="sb" class="btn ${ok?'bg':''}" onclick="doSub()" ${ok?'':'disabled'}>Consultar a LUCID →</button>
@@ -889,8 +812,7 @@ function rMem(a){
   var danger='<div class="mt30 tc"><button class="btn btn-r" style="font-size:.62rem" onclick="if(confirm(\'¿Borrar memoria? Esta acción no se puede deshacer.\')){localStorage.removeItem(\'lucid-mem\');goHome()}">Reiniciar memoria</button></div>';
   var escudoSec=mem.escudoActivations&&mem.escudoActivations.length?sec('Activaciones del escudo',mem.escudoActivations.slice(0,5)):'';
   var nachoSec=mem.nachoProgress?'<div class="mem-sec"><div class="mem-title">Proyecto Nacho / IA</div><div class="mem-item">'+esc(mem.nachoProgress)+'</div></div>':'';
-  var learnSec=(mem.learningTopics&&mem.learningTopics.length)?sec('Temas aprendidos',mem.learningTopics.slice(0,8)):'';
-  var gapSec=(mem.knowledgeGaps&&mem.knowledgeGaps.length)?sec('Gaps detectados',mem.knowledgeGaps.slice(0,4)):'';
+  var learnSec='';var gapSec='';
   var trajBlock='';
   if(mem.emotionalHistory&&mem.emotionalHistory.length){
     var trajItems=mem.emotionalHistory.slice(0,8).map(function(h){
@@ -907,9 +829,8 @@ function rMem(a){
 // ── ACTIONS ──────────────────────────────────────────────────
 function goHome(){
   S.page='home';S.sessions=lss();S.review=null;S.cdel=null;
-  S.generatingReport=false;S.arrivalState=null;S.learnArea=null;S.learnTopic=null;
+  S.generatingReport=false;S.arrivalState=null;
   S.sess={id:null,phase:'write',input:'',conversation:[],apiHistory:[],saving:false,error:null};
-  S.learnSess={id:null,phase:'active',conversation:[],apiHistory:[],saving:false,error:null};
   R();}
 function startWrite(){
   S.sess={id:null,phase:'write',input:'',conversation:[],apiHistory:[],saving:false,error:null};
@@ -999,11 +920,11 @@ function rArrive(a){
   a.innerHTML='<div class="arrive"><div class="ring">◈</div><p class="arrive-q">¿Cómo llegas hoy?</p><div class="arrive-opts">'+opts+'</div><div class="mt20"><button class="bb" onclick="goHome()">← Volver</button></div></div>';}
 
 function doArrive(state){
-  S.arrivalState=state;
-  if(S.arrivalCallback==='learn'){S.arrivalCallback=null;S.page='learn-select';R();}
-  else{S.arrivalCallback=null;S.page='session';S.sess={id:null,phase:'write',input:'',conversation:[],apiHistory:[],saving:false,error:null};R();}}
+  S.arrivalState=state;S.arrivalCallback=null;
+  S.sess={id:null,phase:'write',input:'',conversation:[],apiHistory:[],saving:false,error:null};
+  S.page='session';R();}
 
-function startArrive(dest){S.arrivalCallback=dest;S.page='arrive';R();}
+function startArrive(){S.page='arrive';R();}
 
 function doFollowUp(done){
   var mem=loadMem();
@@ -1012,92 +933,6 @@ function doFollowUp(done){
   else{mem.consecutiveNo=0;mem.accountabilityLog=[{ts:Date.now(),text:mem.lastClosure,done:true},...(mem.accountabilityLog||[])].slice(0,20);}
   saveMem(mem);gistPush();R();}
 
-// ── LEARN SELECT ──────────────────────────────────────────────
-function rLearnSelect(a){
-  var mem=loadMem();
-  var areas=LEARN_AREAS.map(function(ar){
-    var learned=(mem.learningTopics||[]).filter(function(t){return t.toLowerCase().startsWith(ar.title.toLowerCase().slice(0,6))}).length;
-    var badge=learned?'<span style="font-size:.56rem;color:rgba(107,159,212,0.5);margin-left:8px">'+learned+' tema'+(learned>1?'s':'')+'</span>':'';
-    return'<div class="learn-area" onclick="doSelectArea(\''+ar.id+'\')"><div class="learn-area-icon">'+ar.icon+'</div><div class="learn-area-title">'+ar.title+badge+'</div><div class="learn-area-desc">'+ar.desc+'</div></div>';
-  }).join('');
-  a.innerHTML='<div class="se"><div class="sh"><div><div class="ls">LUCID · Aprender</div><div class="ld">◎ Elige un área</div></div><button class="bb" onclick="goHome()">← Inicio</button></div>'+areas+'</div>';}
-
-function doSelectArea(areaId){
-  S.learnArea=LEARN_AREAS.find(function(a){return a.id===areaId});
-  S.page='learn-topic';R();}
-
-// ── LEARN TOPIC ───────────────────────────────────────────────
-function rLearnTopic(a){
-  if(!S.learnArea)return;
-  var ar=S.learnArea;
-  var mem=loadMem();
-  var topicItems=ar.topics.map(function(t){
-    var done=(mem.learningTopics||[]).some(function(lt){return lt.includes(t.slice(0,25))});
-    return'<div class="learn-topic-item" onclick="doSelectTopic(\''+t.replace(/'/g,"\'")+'\')">'+t+(done?' <span style="color:rgba(107,159,212,0.45);font-size:.7rem">· ya trabajado</span>':'')+'</div>';
-  }).join('');
-  a.innerHTML='<div class="se"><div class="sh"><div><div class="ls">◎ '+ar.title+'</div><div class="ld">Elige un tema</div></div><button class="bb" onclick="S.page=\'learn-select\';R()">← Áreas</button></div>'+topicItems+'<div class="mt20"><div class="flbl">O escribe tu propio tema</div><textarea class="rb" id="custom-topic" placeholder="Escribe el tema que quieres trabajar..." style="min-height:80px"></textarea><div class="mt12 tc"><button class="btn" style="border-color:rgba(107,159,212,0.5);color:rgba(107,159,212,0.85)" onclick="var t=document.getElementById(\'custom-topic\').value.trim();if(t.length>5)doSelectTopic(t)">Trabajar este tema →</button></div></div></div>';}
-
-function doSelectTopic(topic){
-  S.learnTopic=topic;
-  S.learnSess={id:null,phase:'active',conversation:[],apiHistory:[],saving:false,error:null};
-  S.page='learn-session';R();doLearnStart();}
-
-// ── LEARN SESSION RENDER ──────────────────────────────────────
-function rLearnSess(a){
-  if(!S.learnArea||!S.learnTopic)return;
-  var isLoading=S.learnSess.conversation.some(function(m){return m.role==='loading'});
-  var convHtml='<div class="conv">';
-  S.learnSess.conversation.forEach(function(msg){
-    if(msg.role==='user'){
-      convHtml+='<div class="msg-u"><div class="msg-u-label">Tú</div><div class="msg-u-text">'+esc(msg.text)+'</div></div>';
-    } else if(msg.role==='learn'){
-      convHtml+='<div class="msg-l"><div class="msg-l-header"><span class="msg-l-name" style="color:rgba(107,159,212,0.8)">◎ LUCID · Mentor</span></div>';
-      if(msg.reading)convHtml+='<div class="msg-reading">'+esc(msg.reading)+'</div>';
-      if(msg.body)convHtml+='<div class="msg-learn">'+esc(msg.body)+'</div>';
-      if(msg.closure)convHtml+='<div class="msg-closure">'+esc(msg.closure)+'</div>';
-      convHtml+='</div>';
-    } else if(msg.role==='loading'){
-      convHtml+='<div class="msg-loading"><div class="msg-l-name mb10" style="color:rgba(107,159,212,0.7)">◎ LUCID · Mentor</div>'+dots('rgba(107,159,212,0.8)')+'</div>';
-    }
-  });
-  convHtml+='</div>';
-  var replyBox='';
-  if(!isLoading&&S.learnSess.conversation.length>0){
-    replyBox='<div class="ci-wrap"><textarea class="ci" id="lr" placeholder="Responde, aplica o pregunta..." onkeydown="if(event.key===\'Enter\'&&(event.metaKey||event.ctrlKey))doLearnRep()" style="border-top-color:rgba(107,159,212,0.2)"></textarea><div class="reply-row"><span class="kbd-hint">Cmd+Enter</span><button class="btn" style="border-color:rgba(107,159,212,0.5);color:rgba(107,159,212,0.85);padding:9px 28px" onclick="doLearnRep()">Continuar →</button></div></div>';}
-  var savingHtml=S.learnSess.saving?'<div class="saving">◎ Actualizando memoria de aprendizaje...</div>':'';
-  a.innerHTML='<div class="se"><div class="sh"><div><div class="ls" style="color:rgba(107,159,212,0.7)">◎ Aprendiendo</div><div class="ld">'+esc(S.learnTopic.slice(0,55))+'</div></div><button class="bb" onclick="goHome()">← Salir</button></div>'+(S.learnSess.error?'<div class="eb">'+esc(S.learnSess.error)+'</div>':'')+convHtml+replyBox+savingHtml+'<div class="mt48 tc"><button class="btn" onclick="S.page=\'learn-select\';R()">Otro tema →</button></div></div>';}
-
-// ── LEARN FLOW ────────────────────────────────────────────────
-async function doLearnStart(){
-  S.learnSess.conversation=[{role:'loading'}];R();scrollB();
-  try{
-    var mem=loadMem();
-    var raw=await api(buildLearnSys(buildMemCtx(mem),S.learnArea.title,S.learnTopic,S.arrivalState,1),[{role:'user',content:'Empecemos: '+S.learnTopic}],MODEL_DEEP);
-    var parsed=parseLucid(raw);
-    S.learnSess.apiHistory=[{role:'user',content:'Empecemos: '+S.learnTopic},{role:'assistant',content:raw}];
-    S.learnSess.conversation=[Object.assign({role:'learn'},parsed)];
-    R();scrollB();
-  }catch(e){S.learnSess.error=e.message;S.learnSess.conversation=[];R();}}
-
-async function doLearnRep(){
-  var el=document.getElementById('lr'),t=el?el.value.trim():'';if(!t)return;el.value='';
-  S.learnSess.conversation.push({role:'user',text:t});
-  S.learnSess.apiHistory.push({role:'user',content:t});
-  S.learnSess.conversation.push({role:'loading'});R();scrollB();
-  try{
-    var mem=loadMem();
-    var turnNum=S.learnSess.conversation.filter(function(m){return m.role==='learn'}).length+1;
-    var raw=await api(buildLearnSys(buildMemCtx(mem),S.learnArea.title,S.learnTopic,S.arrivalState,turnNum),S.learnSess.apiHistory,MODEL_DEEP);
-    var parsed=parseLucid(raw);
-    S.learnSess.apiHistory.push({role:'assistant',content:raw});
-    S.learnSess.conversation=S.learnSess.conversation.filter(function(m){return m.role!=='loading'});
-    S.learnSess.conversation.push(Object.assign({role:'learn'},parsed));
-    R();scrollB();
-    if(S.learnSess.conversation.filter(function(m){return m.role==='user'}).length>=2){
-      S.learnSess.saving=true;R();
-      await updateLearnMem(S.learnSess.conversation,S.learnArea.title,S.learnTopic);
-      S.learnSess.saving=false;R();}
-  }catch(e){S.learnSess.error=e.message;S.learnSess.conversation=S.learnSess.conversation.filter(function(m){return m.role!=='loading'});R();}}
 
 // ── START ────────────────────────────────────────────────────
 initCheck();
